@@ -1,2 +1,1 @@
-# SCGO
-Website for buying and selling used stuff around USC
+## TO DO: edit README.md
