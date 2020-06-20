@@ -30,7 +30,7 @@ $ cd client; npm install
 To start app, you need to create dev.js under server/config folder and add your mongoDB connection in the file like 
 
 ```js
-{}
+{
 module.exports = {
     mongoURI: '<your connection string>'
 }
