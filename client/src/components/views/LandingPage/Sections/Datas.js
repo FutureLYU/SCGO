@@ -1,3 +1,4 @@
+
 const price = [
     {
         "_id": 0,
@@ -31,6 +32,8 @@ const price = [
     }
 ]
 
+
+
 const continents = [
     {
         "_id": 1,
@@ -59,8 +62,9 @@ const continents = [
     {
         "_id": 7,
         "name": "Antarctica"
-    },
+    }
 ]
+
 
 export {
     price,

@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
-import { Collapse, Radio } from 'antd'
+import { Collapse, Radio } from 'antd';
+const { Panel } = Collapse;
 
-const { Panel } = Collapse
 
 function RadioBox(props) {
+
     const [Value, setValue] = useState('0')
 
     const renderRadioBox = () => (
-        props.list.map((value) => (
+        props.list &&  props.list.map((value) => (
             <Radio key={value._id} value={`${value._id}`}>{value.name}</Radio>
         ))
     )
@@ -22,7 +23,9 @@ function RadioBox(props) {
             <Collapse defaultActiveKey={['0']}>
                 <Panel header="price" key="1">
                     <Radio.Group onChange={handleChange} value={Value}>
+
                         {renderRadioBox()}
+
                     </Radio.Group>
                 </Panel>
             </Collapse>
