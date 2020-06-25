@@ -1,5 +1,8 @@
-node_modules/
-client/node_modules/
+**/node_modules/
+<<<<<<< HEAD
+
+=======
+>>>>>>> 292d5de23d97c3163f1ac810597d59aca097bd3e
 
 /build
 
