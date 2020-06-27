@@ -54,8 +54,38 @@ router.post("/register", (req, res) => {
           });
         });
       } else {
-        return res.json({ success: false, err: "Wrong Verification Code" });
+        return res.json({
+          success: false,
+          err: { errmsg: "Wrong Verification Code" },
+        });
       }
+    }
+  });
+});
+
+router.post("/changepassword", (req, res) => {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    if (!user) {
+      return res.json({ success: false, err: "account does not exist" });
+    } else {
+      Verify.findById(req.body.verifyId, (err, doc) => {
+        if (err) return res.json({ success: false, err });
+        else {
+          if (doc.code === req.body.verifyCode) {
+            user.password = req.body.password;
+            user.markModified("password");
+            user.save((err, pw) => {
+              if (err) return res.json({ success: false, err });
+              else return res.status(200).json({ success: true });
+            });
+          } else {
+            return res.json({
+              success: false,
+              err: "Wrong Verification Code",
+            });
+          }
+        }
+      });
     }
   });
 });
