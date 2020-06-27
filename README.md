@@ -53,6 +53,20 @@ $ npm run dev
 
 # Update
 
+### 06-27 update (hanxi)
+
+- RegisterPAge 中加入 codebox 样式响应 get -> wait 15s -> send again
+- ChangePasswordPage 中加入 codebox 相同样式响应
+
+### 06-26 update (hanxi)
+
+- RegisterPage 整理报错信息 加入 user already exists 警告
+- register api 中统一 err 格式 加入 err.errmsg
+- 新增 forget password 跳转页面
+- routes／users 中加入 changepassword api 逻辑
+- 取消 User 中 password change 提示
+- （待加入） 注册修改页面中 codebox 的响应样式
+
 ### 06-25 update (hanxi)
 
 - dev.js 中加入邮箱及 smtp 码信息 (prod.js 中尚未加入)
@@ -63,15 +77,6 @@ $ npm run dev
 - registerPage.js 中加入 codebox 组件和点击获取验证码逻辑（CodeGet），增加两个 state verifyCode 和 VerifyId 并将其加入 dataToSubmit 送入 register api
 - 加入 api/users/sendEmail 使用 post 方法发送 email
 - 依赖中加入 nodemailer （发送邮件功能）
-
-### 06-26 update (hanxi)
-
-- RegisterPage 整理报错信息 加入 user already exists 警告
-- register api 中统一 err 格式 加入 err.errmsg
-- 新增 forget password 跳转页面
-- routes／users 中加入 changepassword api 逻辑
-- 取消 User 中 password change 提示
-- （待加入） 注册修改页面中 codebox 的响应样式
 
 ## Contributing
 

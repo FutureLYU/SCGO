@@ -36,6 +36,10 @@ function RegisterPage(props) {
   const dispatch = useDispatch();
   const [VerifyCode, setVerifyCode] = useState("");
   const [VerifyId, setVerifyId] = useState("");
+  const [ifLoading, setifLoading] = useState(false);
+  const [codeboxContent, setcodeboxContent] = useState(
+    "Get Verification Code From Email"
+  );
   return (
     <Formik
       initialValues={{
@@ -101,15 +105,23 @@ function RegisterPage(props) {
         } = props;
 
         const codeGet = () => {
+          setifLoading(true);
+          setcodeboxContent("wait about 15 s");
           let variable = { email: values.email };
           Axios.post("/api/users/sendEmail", variable).then((response) => {
             if (response.data.success) {
               //console.log(response.data);
               setVerifyId(response.data.id);
               // button state
+              setTimeout(() => {
+                setifLoading(false);
+                setcodeboxContent("send again");
+              }, 15000);
             } else {
               //console.log(response.data.err);
               alert("Failed to send email");
+              setifLoading(false);
+              setcodeboxContent("Get Verification Code From Email");
             }
           });
         };
@@ -203,8 +215,13 @@ function RegisterPage(props) {
                       setVerifyCode(codeArray.join(""));
                     }}
                   />
-                  <Button onClick={codeGet} type="primary" block={true}>
-                    Get Verification Code From Email
+                  <Button
+                    onClick={codeGet}
+                    type="primary"
+                    block={true}
+                    loading={ifLoading}
+                  >
+                    {codeboxContent}
                   </Button>
                 </Form.Item>
               </Form.Item>
