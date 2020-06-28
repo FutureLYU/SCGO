@@ -29,8 +29,8 @@ const tailFormItemLayout = {
 };
 
 function ChangePasswordPage(props) {
-  const [VerifyCode, setVerifyCode] = useState("");
-  const [VerifyId, setVerifyId] = useState("");
+  const [VerifyCode, setVerifyCode] = useState("0000");
+  const [VerifyId, setVerifyId] = useState("initialId");
   const [ifLoading, setifLoading] = useState(false);
   const [codeboxContent, setcodeboxContent] = useState(
     "Get Verification Code From Email"
@@ -68,7 +68,9 @@ function ChangePasswordPage(props) {
               if (response.data.success) {
                 props.history.push("/login");
               } else {
-                alert(response.data.err);
+                alert(response.data.err.message);
+
+                window.location.reload();
               }
             }
           );

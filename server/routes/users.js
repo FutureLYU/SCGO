@@ -18,8 +18,7 @@ router.get("/auth", auth, (req, res) => {
     isAdmin: req.user.role === 0 ? false : true,
     isAuth: true,
     email: req.user.email,
-    name: req.user.name,
-    lastname: req.user.lastname,
+    username: req.user.name,
     role: req.user.role,
     image: req.user.image,
     cart: req.user.cart,
@@ -28,11 +27,16 @@ router.get("/auth", auth, (req, res) => {
 });
 
 router.post("/register", (req, res) => {
+  if (req.body.verifyId === "initialId") {
+    return res.json({
+      success: false,
+      err: { errmsg: "please get verification code" },
+    });
+  }
   userData = {
     email: req.body.email,
     password: req.body.password,
-    name: req.body.name,
-    lastname: req.body.lastname,
+    username: req.body.username,
     image: req.body.image,
   };
   newObjId = mongoose.Types.ObjectId(req.body.verifyId);
@@ -64,9 +68,18 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/changepassword", (req, res) => {
+  if (req.body.verifyId === "initialId") {
+    return res.json({
+      success: false,
+      err: { message: "please get verification code" },
+    });
+  }
   User.findOne({ email: req.body.email }, (err, user) => {
     if (!user) {
-      return res.json({ success: false, err: "account does not exist" });
+      return res.json({
+        success: false,
+        err: { message: "account does not exist" },
+      });
     } else {
       Verify.findById(req.body.verifyId, (err, doc) => {
         if (err) return res.json({ success: false, err });
@@ -81,7 +94,7 @@ router.post("/changepassword", (req, res) => {
           } else {
             return res.json({
               success: false,
-              err: "Wrong Verification Code",
+              err: { message: "Wrong Verification Code" },
             });
           }
         }

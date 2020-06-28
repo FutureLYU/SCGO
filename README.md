@@ -57,6 +57,9 @@ $ npm run dev
 
 - RegisterPAge 中加入 codebox 样式响应 get -> wait 15s -> send again
 - ChangePasswordPage 中加入 codebox 相同样式响应
+- 在 Register 和 changepassword 中加入 报错强制刷新 增加安全性 防止验证码被暴力试错
+- 统一 changepassword 中 err 格式为 err.message 与 redux 中 err.errmsg 区分
+- 增加了关于验证码的 please get verification code 逻辑 用户如 submit 前未获取验证码则报错
 
 ### 06-26 update (hanxi)
 
