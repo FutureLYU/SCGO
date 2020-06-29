@@ -1,12 +1,8 @@
 import React, { useState } from "react";
-import moment from "moment";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { registerUser } from "../../../_actions/user_actions";
-import { useDispatch } from "react-redux";
-import Codebox from "../../utils/CodeBox/CodeBox"; //"@axetroy/react-codebox";
+import Codebox from "../../utils/CodeBox/CodeBox";
 import Axios from "axios";
-
 import { Form, Input, Button } from "antd";
 
 const formItemLayout = {
@@ -32,8 +28,7 @@ const tailFormItemLayout = {
   },
 };
 
-function RegisterPage(props) {
-  const dispatch = useDispatch();
+function ChangePasswordPage(props) {
   const [VerifyCode, setVerifyCode] = useState("0000");
   const [VerifyId, setVerifyId] = useState("initialId");
   const [ifLoading, setifLoading] = useState(false);
@@ -44,14 +39,11 @@ function RegisterPage(props) {
     <Formik
       initialValues={{
         email: "",
-        username: "",
         verification: "",
         password: "",
         confirmPassword: "",
       }}
       validationSchema={Yup.object().shape({
-        username: Yup.string().required("Username is required"),
-
         email: Yup.string()
           .email("Email is invalid")
           .required("Email is required"),
@@ -67,24 +59,21 @@ function RegisterPage(props) {
           let dataToSubmit = {
             email: values.email,
             password: values.password,
-            username: values.username,
             verifyId: VerifyId,
             verifyCode: VerifyCode,
-            image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`,
           };
 
-          dispatch(registerUser(dataToSubmit)).then((response) => {
-            if (response.payload.success) {
-              props.history.push("/login");
-            } else {
-              if (response.payload.err.code === 11000) {
-                alert("User already exists");
+          Axios.post("api/users/changepassword", dataToSubmit).then(
+            (response) => {
+              if (response.data.success) {
+                props.history.push("/login");
               } else {
-                alert(response.payload.err.errmsg);
+                alert(response.data.err.message);
+
+                window.location.reload();
               }
-              window.location.reload();
             }
-          });
+          );
 
           setSubmitting(false);
         }, 500);
@@ -127,31 +116,12 @@ function RegisterPage(props) {
 
         return (
           <div className="app">
-            <h2>Sign up</h2>
+            <h2>Change Password</h2>
             <Form
               style={{ minWidth: "375px" }}
               {...formItemLayout}
               onSubmit={handleSubmit}
             >
-              <Form.Item required label="Username">
-                <Input
-                  id="username"
-                  placeholder="Enter your username"
-                  type="text"
-                  value={values.username}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  className={
-                    errors.username && touched.username
-                      ? "text-input error"
-                      : "text-input"
-                  }
-                />
-                {errors.username && touched.username && (
-                  <div className="input-feedback">{errors.username}</div>
-                )}
-              </Form.Item>
-
               <Form.Item
                 required
                 label="Email"
@@ -208,7 +178,7 @@ function RegisterPage(props) {
 
               <Form.Item
                 required
-                label="Password"
+                label="New Password"
                 hasFeedback
                 validateStatus={
                   errors.password && touched.password ? "error" : "success"
@@ -268,4 +238,4 @@ function RegisterPage(props) {
   );
 }
 
-export default RegisterPage;
+export default ChangePasswordPage;
