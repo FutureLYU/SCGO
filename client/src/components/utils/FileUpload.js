@@ -4,7 +4,7 @@ import { Icon } from 'antd';
 import Axios from 'axios';
 function FileUpload(props) {
 
-    const [Images, setImages] = useState([])
+    const [Images, setImages] = useState(props.images)
 
     const onDrop = (files) => {
 

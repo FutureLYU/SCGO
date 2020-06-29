@@ -34,39 +34,19 @@ const price = [
 
 
 
-const continents = [
+const tag = [
     {
         "_id": 1,
-        "name": "Africa"
+        "name": "Lorenzo"
     },
     {
         "_id": 2,
-        "name": "Europe"
+        "name": "Gateway"
     },
-    {
-        "_id": 3,
-        "name": "Asia"
-    },
-    {
-        "_id": 4,
-        "name": "North America"
-    },
-    {
-        "_id": 5,
-        "name": "South America"
-    },
-    {
-        "_id": 6,
-        "name": "Australia"
-    },
-    {
-        "_id": 7,
-        "name": "Antarctica"
-    }
 ]
 
 
 export {
     price,
-    continents
+    tag
 }

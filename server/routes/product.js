@@ -42,10 +42,10 @@ router.post("/uploadImage", auth, (req, res) => {
 
 router.post("/uploadProduct", auth, (req, res) => {
 
-    //save all the data we got from the client into the DB 
-    const product = new Product(req.body)
+    // save all the data we got from the client into the DB 
+    const products = req.body.map((item) => new Product(item))
 
-    product.save((err) => {
+    Product.insertMany(products, (err) => {
         if (err) return res.status(400).json({ success: false, err })
         return res.status(200).json({ success: true })
     })

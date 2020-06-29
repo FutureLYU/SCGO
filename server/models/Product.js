@@ -21,9 +21,9 @@ const productSchema = mongoose.Schema({
         type: Array,
         default: []
     },
-    continents: {
-        type: Number,
-        default: 1
+    tags: {
+        type: Array,
+        default: []
     },
     sold: {
         type: Number,
