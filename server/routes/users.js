@@ -328,4 +328,31 @@ router.post("/sendEmail", (req, res) => {
     }
   });
 });
+
+// get product uploaded
+router.get("/getUploadProduct", auth, (req, res) => {
+  User.findOne({ _id: req.user._id }, (err, doc) => {
+    let uploadProduct = doc.upload;
+    if (err) return res.status(400).send(err);
+    return res.status(200).json({ uploadProduct });
+  });
+});
+
+// update product uploaded
+router.post("/updateUploadProduct", auth, (req, res) => {
+  const newUploadProduct = req.body;
+
+  User.findOneAndUpdate(
+    { _id: req.user._id },
+    { upload: newUploadProduct },
+    (err, doc) => {
+      if (err) return res.json({ success: false, err });
+      return res.status(200).send({
+        success: true,
+      });
+    }
+  );
+  
+});
+
 module.exports = router;

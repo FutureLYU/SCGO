@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Typography, Button, Form, message, Input, Icon, Col, Row, Card, Modal, Tag } from 'antd';
 import FileUpload from '../../utils/FileUpload';
 import ImageSlider from '../../utils/ImageSlider';
@@ -21,6 +21,15 @@ function UploadProductPage(props) {
     const [Images, setImages] = useState([])
     const [Edit, setEdit] = useState(false)
     const [EditIndex, setEditIndex] = useState(-1)
+
+
+    useEffect(() => {
+        Axios.get('/api/users/getUploadProduct')
+            .then(response => {
+                console.log(response.data.uploadProduct);
+                setItems(response.data.uploadProduct);
+            })
+    }, [])
 
     // Product Form Update
     const onTitleChange = (event) => {
@@ -67,6 +76,12 @@ function UploadProductPage(props) {
                 }
             })
         setItems([])
+
+        // update upload product
+        Axios.post('/api/users/updateUploadProduct', [])
+            .then(response => {
+                console.log("Update successfully")
+            })
     }
 
     const onEdit = (index) => {
@@ -89,6 +104,12 @@ function UploadProductPage(props) {
         let newItems = [...Items]
         newItems.splice(index, 1)
         setItems(newItems)
+
+        // update upload product
+        Axios.post('/api/users/updateUploadProduct', newItems)
+            .then(response => {
+                console.log("Update successfully")
+            })
     }
 
     const handleOk = (event) => {
@@ -106,12 +127,13 @@ function UploadProductPage(props) {
             images: Images,
             tags: TagValue,
         }
+        let newItems = [...Items]
         if (Edit && EditIndex > -1) {
-            let newItems = [...Items]
             newItems[EditIndex] = newItem
             setItems(newItems)
         } else {
-            setItems([...Items, newItem]);
+            newItems = [...newItems, newItem]
+            setItems(newItems);
         }
         
         // set all values to default
@@ -123,6 +145,12 @@ function UploadProductPage(props) {
         setImages([]);
         setEdit(false);
         setEditIndex(-1);
+
+        // update upload product
+        Axios.post('/api/users/updateUploadProduct', newItems)
+            .then(response => {
+                console.log("Update successfully")
+            })
     }
 
     const handleCancel = (event) => {
@@ -208,14 +236,14 @@ function UploadProductPage(props) {
             }
             <br /><br />
 
-            {Items.length === 0 ?
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button style={{ width: '100px', margin: 'auto' }} onClick={onAdd}>Add</Button>
-                </div> :
+            {Items.length > 0 ?
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <Button style={{ width: '100px', margin: '25px' }} onClick={onAdd}>Add</Button>
                     <Button style={{ width: '100px', margin: '25px' }} onClick={onSubmit}>Submit</Button>
-                </div>
+                </div> :
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button style={{ width: '100px', margin: 'auto' }} onClick={onAdd}>Add</Button>
+                </div> 
             }
 
             <div>
