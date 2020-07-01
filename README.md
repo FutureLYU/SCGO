@@ -53,6 +53,18 @@ $ npm run dev
 
 # Update
 
+### 07-01 update upload page (Harold)
+
+- 利用sharp库resize上传图片大小方便长图拼接
+- 保存图片height用于画布设置
+
+### 06-28 update upload page (Harold)
+
+- 添加add来上传想要upload的物品；添加submit提交想要上传的物品（支持多物品一键上传）
+- 以卡片形式展示想要upload的物品，支持edit/delete；多图将滑动展示
+- 添加modal和form来上传物品detail，支持多图上传
+- 物品detail暂时包括image, title, price, description, tag; 其中tag为optional, 其他required
+
 ### 06-27 update (hanxi)
 
 - RegisterPAge 中加入 codebox 样式响应 get -> wait 15s -> send again
