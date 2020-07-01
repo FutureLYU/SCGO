@@ -2,42 +2,54 @@ const express = require('express');
 const router = express.Router();
 const { Product } = require("../models/Product");
 const multer = require('multer');
+const sharp = require('sharp');
 
 const { auth } = require("../middleware/auth");
 
-var storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/')
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}_${file.originalname}`)
-    },
-    fileFilter: (req, file, cb) => {
-        const ext = path.extname(file.originalname)
-        if (ext !== '.jpg' || ext !== '.png') {
-            return cb(res.status(400).end('only jpg, png are allowed'), false);
-        }
+const multerStorage = multer.memoryStorage();
+const multerFilter = (req, file, cb) => {
+    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
         cb(null, true)
+    } else {
+        cb("Type File is not allowed", false);
     }
-})
+}
 
-var upload = multer({ storage: storage }).single("file")
+const upload = multer({ storage: multerStorage, fileFilter: multerFilter }).single("file")
+const uploadImages = (req, res, next) => {
+    upload(req, res, err => {
+        if (err) { 
+            console.log(err)
+            return res.send(err);
+        }
+        next();
+    });
+};
+  
+const resizeImages = async (req, res, next) => {
+    // console.log(req.file)
+    if (!req.file) return next();
 
+    const newFilename = `${Date.now()}_${req.file.originalname}`;
+    await sharp(req.file.buffer)
+        .resize({ width: 752 })
+        .jpeg({ quality: 90 })
+        .toFile(`uploads/${newFilename}`)
+        .then(info => req.body.height=info.height);
+    req.body.images = `uploads/${newFilename}`;
+    next();
+}
 
 //=================================
 //             Product
 //=================================
 
-router.post("/uploadImage", auth, (req, res) => {
-
-    upload(req, res, err => {
-        if (err) {
-            return res.json({ success: false, err })
-        }
-        return res.json({ success: true, image: res.req.file.path, fileName: res.req.file.filename })
-    })
-
-});
+router.post("/uploadImage", auth, uploadImages, resizeImages, (req, res) => {
+    if (!req.body.images) {
+        return res.json({ success: false, err: "Upload failed" })
+    }
+    return res.json({ success: true, image: req.body.images, height: req.body.height })
+})
 
 
 router.post("/uploadProduct", auth, (req, res) => {

@@ -5,6 +5,7 @@ import Axios from 'axios';
 function FileUpload(props) {
 
     const [Images, setImages] = useState(props.images)
+    const [Heights, setHeights] = useState(props.heights)
 
     const onDrop = (files) => {
 
@@ -17,10 +18,9 @@ function FileUpload(props) {
         Axios.post('/api/product/uploadImage', formData, config)
             .then(response => {
                 if (response.data.success) {
-
                     setImages([...Images, response.data.image])
-                    props.refreshFunction([...Images, response.data.image])
-
+                    setHeights([...Heights, response.data.height])
+                    props.refreshFunction([...Images, response.data.image], [...Heights, response.data.height])
                 } else {
                     alert('Failed to save the Image in Server')
                 }
@@ -32,10 +32,13 @@ function FileUpload(props) {
         const currentIndex = Images.indexOf(image);
 
         let newImages = [...Images]
+        let newHeights = [...Heights]
         newImages.splice(currentIndex, 1)
+        newHeights.splice(currentIndex, 1)
 
         setImages(newImages)
-        props.refreshFunction(newImages)
+        setHeights(newHeights)
+        props.refreshFunction(newImages, newHeights)
     }
 
     return (

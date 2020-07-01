@@ -21,6 +21,10 @@ const productSchema = mongoose.Schema({
         type: Array,
         default: []
     },
+    heights: {
+        type: Array,
+        default: []
+    },
     tags: {
         type: Array,
         default: []

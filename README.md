@@ -53,7 +53,12 @@ $ npm run dev
 
 # Update
 
-### 06-28 update upload page(harold)
+### 07-01 update upload page (Harold)
+
+- 利用sharp库resize上传图片大小方便长图拼接
+- 保存图片height用于画布设置
+
+### 06-28 update upload page (Harold)
 
 - 添加add来上传想要upload的物品；添加submit提交想要上传的物品（支持多物品一键上传）
 - 以卡片形式展示想要upload的物品，支持edit/delete；多图将滑动展示

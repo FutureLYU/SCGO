@@ -19,6 +19,7 @@ function UploadProductPage(props) {
     const [PriceValue, setPriceValue] = useState(0)
     const [TagValue, setTagValue] = useState([])
     const [Images, setImages] = useState([])
+    const [Heights, setHeights] = useState([])
     const [Edit, setEdit] = useState(false)
     const [EditIndex, setEditIndex] = useState(-1)
 
@@ -26,7 +27,6 @@ function UploadProductPage(props) {
     useEffect(() => {
         Axios.get('/api/users/getUploadProduct')
             .then(response => {
-                console.log(response.data.uploadProduct);
                 setItems(response.data.uploadProduct);
             })
     }, [])
@@ -51,8 +51,9 @@ function UploadProductPage(props) {
         setTagValue(nextSelectedTags);
       }
 
-    const updateImages = (newImages) => {
-        setImages(newImages)
+    const updateImages = (newImages, newHeights) => {
+        setImages(newImages);
+        setHeights(newHeights);
     }
 
     // Button actions
@@ -95,6 +96,7 @@ function UploadProductPage(props) {
         setPriceValue(currentItem.price);
         setTagValue(currentItem.tags);
         setImages(currentItem.images);
+        setHeights(currentItem.heights)
 
         setFormValue({...FormValue, visible: true});
     }
@@ -118,6 +120,10 @@ function UploadProductPage(props) {
             return alert('fill all the fields first!')
         }
 
+        if (Images.length != Heights.length) {
+            alert('System error: cannot provide long picture because height cannot be acquired')
+        }
+
         // save value into Items
         const newItem = {
             writer: props.user.userData._id,
@@ -125,6 +131,7 @@ function UploadProductPage(props) {
             description: DescriptionValue,
             price: PriceValue,
             images: Images,
+            heights: Heights,
             tags: TagValue,
         }
         let newItems = [...Items]
@@ -143,6 +150,7 @@ function UploadProductPage(props) {
         setPriceValue(0);
         setTagValue([]);
         setImages([]);
+        setHeights([]);
         setEdit(false);
         setEditIndex(-1);
 
@@ -163,6 +171,7 @@ function UploadProductPage(props) {
         setPriceValue(0);
         setTagValue([]);
         setImages([]);
+        setHeights([]);
         setEdit(false);
         setEditIndex(-1);
     }
@@ -170,7 +179,7 @@ function UploadProductPage(props) {
     const renderProductForm = () => {
         return (
             <Form>
-                <FileUpload refreshFunction={updateImages} images={Images} />
+                <FileUpload refreshFunction={updateImages} images={Images} heights={Heights} />
                 <br /><br />
 
                 <label>Title:</label>
