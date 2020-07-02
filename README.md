@@ -53,17 +53,25 @@ $ npm run dev
 
 # Update
 
+### 07-01 update (hanxi)
+
+- utils 加入 CreateLongPicture 组件
+- 生成长图组件取消外层 button 将逻辑加入 submit
+- uploadPage 中加入 showPicture state 以及 handle 函数 来控制长图组件
+- 增加了长图保存下载功能 命名为 SCGO_LongPicture_Date.now()
+- 增加了长图跳过功能 清空 Items 状态
+
 ### 07-01 update upload page (Harold)
 
-- 利用sharp库resize上传图片大小方便长图拼接
-- 保存图片height用于画布设置
+- 利用 sharp 库 resize 上传图片大小方便长图拼接
+- 保存图片 height 用于画布设置
 
 ### 06-28 update upload page (Harold)
 
-- 添加add来上传想要upload的物品；添加submit提交想要上传的物品（支持多物品一键上传）
-- 以卡片形式展示想要upload的物品，支持edit/delete；多图将滑动展示
-- 添加modal和form来上传物品detail，支持多图上传
-- 物品detail暂时包括image, title, price, description, tag; 其中tag为optional, 其他required
+- 添加 add 来上传想要 upload 的物品；添加 submit 提交想要上传的物品（支持多物品一键上传）
+- 以卡片形式展示想要 upload 的物品，支持 edit/delete；多图将滑动展示
+- 添加 modal 和 form 来上传物品 detail，支持多图上传
+- 物品 detail 暂时包括 image, title, price, description, tag; 其中 tag 为 optional, 其他 required
 
 ### 06-27 update (hanxi)
 
