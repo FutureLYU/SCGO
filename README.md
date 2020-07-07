@@ -53,6 +53,15 @@ $ npm run dev
 
 # Update
 
+### 07-06 update upload page / landing page (Harold)
+
+- 将用于上传的ProductEditForm作为组件提取放置于client/src/components/utils文件夹下
+- 利用objectFit解决图片拉伸问题; 添加title字数限制
+- 添加Category / 交易地点内容到ProductEditForm
+- 修改图片上传限制，添加Preview state用于图片预览
+- 修改landing page filter并添加search按钮
+- 添加用户联系方式
+
 ### 07-01 update (hanxi)
 
 - utils 加入 CreateLongPicture 组件
@@ -71,7 +80,7 @@ $ npm run dev
 - 添加 add 来上传想要 upload 的物品；添加 submit 提交想要上传的物品（支持多物品一键上传）
 - 以卡片形式展示想要 upload 的物品，支持 edit/delete；多图将滑动展示
 - 添加 modal 和 form 来上传物品 detail，支持多图上传
-- 物品 detail 暂时包括 image, title, price, description, tag; 其中 tag 为 optional, 其他 required
+- 物品 detail 暂时包括 image, title, price, description, category, place; 其中 place 为 optional, 其他 required
 
 ### 06-27 update (hanxi)
 

@@ -25,9 +25,25 @@ const productSchema = mongoose.Schema({
         type: Array,
         default: []
     },
-    tags: {
+    places: {
         type: Array,
         default: []
+    },
+    category: {
+        type: Number,
+        default: 1
+    },
+    wechat: {
+        type: String,
+        default: ""
+    },
+    email: {
+        type: String,
+        default: ""
+    },
+    phone: {
+        type: String,
+        default: ""
     },
     sold: {
         type: Number,

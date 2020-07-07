@@ -9,9 +9,11 @@ function SearchFeature(props) {
 
     const onChangeSearch = (event) => {
         setSearchTerms(event.currentTarget.value)
+    }
 
-        props.refreshFunction(event.currentTarget.value)
-
+    const onSubmit = () => {
+        props.refreshFunction(SearchTerms)
+        setSearchTerms("")
     }
 
     return (
@@ -19,6 +21,8 @@ function SearchFeature(props) {
             <Search
                 value={SearchTerms}
                 onChange={onChangeSearch}
+                onSearch={onSubmit}
+                enterButton="Search"
                 placeholder="Search By Typing..."
             />
         </div>

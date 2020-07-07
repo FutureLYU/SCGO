@@ -1,40 +1,29 @@
 import React, { useState, useEffect } from "react";
-import {
-  Typography,
-  Button,
-  Form,
-  message,
-  Input,
-  Icon,
-  Col,
-  Row,
-  Card,
-  Modal,
-  Tag,
-} from "antd";
-import FileUpload from "../../utils/FileUpload";
+import { Button, Col, Row, Card, Tag } from "antd";
 import ImageSlider from "../../utils/ImageSlider";
 import Axios from "axios";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import CreateLongPicture from "../../utils/CreatLongPicture/CreateLongPicture";
+import ProductEditForm from "../../utils/ProductEditForm";
+import ContactAddForm from "../../utils/ContactAddForm";
 
-const { Title } = Typography;
-const { TextArea } = Input;
-const { CheckableTag } = Tag;
+const categoryData = [
+  { key: 1, value: "Commodity" },
+  { key: 2, value: "Electronics" },
+  { key: 3, value: "Furniture" },
+  { key: 4, value: "Food & Drinks" },
+  { key: 5, value: "Clothes / Bags / Shoes" },
+  { key: 6, value: "Makeup / Skin Care Products" },
+  { key: 7, value: "Others" }
+]
 
 function UploadProductPage(props) {
-  const tagsData = ["Lorenzo", "Gateway"];
   const [Items, setItems] = useState([]);
   const [FormValue, setFormValue] = useState({ visible: false });
-  const [TitleValue, setTitleValue] = useState("");
-  const [DescriptionValue, setDescriptionValue] = useState("");
-  const [PriceValue, setPriceValue] = useState(0);
-  const [TagValue, setTagValue] = useState([]);
-  const [Images, setImages] = useState([]);
-  const [Heights, setHeights] = useState([]);
   const [Edit, setEdit] = useState(false);
   const [EditIndex, setEditIndex] = useState(-1);
   const [showPicture, setshowPicture] = useState(false);
+  const [CurrentItem, setCurrentItem] = useState({});
+  const [ContactForm, setContactForm] = useState({ visible: false });
 
   useEffect(() => {
     Axios.get("/api/users/getUploadProduct").then((response) => {
@@ -42,43 +31,20 @@ function UploadProductPage(props) {
     });
   }, []);
 
-  // Product Form Update
-  const onTitleChange = (event) => {
-    setTitleValue(event.currentTarget.value);
-  };
-
-  const onDescriptionChange = (event) => {
-    setDescriptionValue(event.currentTarget.value);
-  };
-
-  const onPriceChange = (event) => {
-    setPriceValue(event.currentTarget.value);
-  };
-
-  const onTagChange = (tag, checked) => {
-    const selectedTags = [...TagValue];
-    const nextSelectedTags = checked
-      ? [...selectedTags, tag]
-      : selectedTags.filter((t) => t !== tag);
-    console.log("You are interested in: ", nextSelectedTags);
-    setTagValue(nextSelectedTags);
-  };
-
-  const updateImages = (newImages, newHeights) => {
-    setImages(newImages);
-    setHeights(newHeights);
-  };
-
-  // Button actions
   const onAdd = (event) => {
     // set state of Form Value
     setFormValue({ ...FormValue, visible: true });
   };
+
   const clearItems = () => {
     setItems([]);
   };
-  const onSubmit = (event) => {
-    event.preventDefault();
+
+  const onAddContact = () => {
+    setContactForm({ ...ContactForm, visible: true });
+  }
+
+  const onSubmit = () => {
 
     // submit all items into database
     Axios.post("/api/product/uploadProduct", Items).then((response) => {
@@ -101,15 +67,7 @@ function UploadProductPage(props) {
     // set edit
     setEdit(true);
     setEditIndex(index);
-
-    let currentItem = Items[index];
-    setTitleValue(currentItem.title);
-    setDescriptionValue(currentItem.description);
-    setPriceValue(currentItem.price);
-    setTagValue(currentItem.tags);
-    setImages(currentItem.images);
-    setHeights(currentItem.heights);
-
+    setCurrentItem(Items[index])
     setFormValue({ ...FormValue, visible: true });
   };
 
@@ -125,27 +83,7 @@ function UploadProductPage(props) {
     });
   };
 
-  const handleOk = (event) => {
-    if (!TitleValue || !DescriptionValue || !PriceValue || !Images.length) {
-      return alert("fill all the fields first!");
-    }
-
-    if (Images.length != Heights.length) {
-      alert(
-        "System error: cannot provide long picture because height cannot be acquired"
-      );
-    }
-
-    // save value into Items
-    const newItem = {
-      writer: props.user.userData._id,
-      title: TitleValue,
-      description: DescriptionValue,
-      price: PriceValue,
-      images: Images,
-      heights: Heights,
-      tags: TagValue,
-    };
+  const handleOk = (newItem) => {
     let newItems = [...Items];
     if (Edit && EditIndex > -1) {
       newItems[EditIndex] = newItem;
@@ -153,16 +91,11 @@ function UploadProductPage(props) {
     } else {
       newItems = [...newItems, newItem];
       setItems(newItems);
+      setCurrentItem({});
     }
 
     // set all values to default
     setFormValue({ ...FormValue, visible: false });
-    setTitleValue("");
-    setDescriptionValue("");
-    setPriceValue(0);
-    setTagValue([]);
-    setImages([]);
-    setHeights([]);
     setEdit(false);
     setEditIndex(-1);
 
@@ -172,63 +105,55 @@ function UploadProductPage(props) {
     });
   };
 
-  const handleCancel = (event) => {
+  const handleCancel = () => {
     // close model
     setFormValue({ ...FormValue, visible: false });
 
     // set all values to default
-    setTitleValue("");
-    setDescriptionValue("");
-    setPriceValue(0);
-    setTagValue([]);
-    setImages([]);
-    setHeights([]);
     setEdit(false);
     setEditIndex(-1);
+    setCurrentItem({})
   };
 
-  const renderProductForm = () => {
-    return (
-      <Form>
-        <FileUpload
-          refreshFunction={updateImages}
-          images={Images}
-          heights={Heights}
-        />
-        <br />
-        <br />
+  const addContactOk = (contact) => {
+    setContactForm({ ...ContactForm, visible: false });
 
-        <label>Title:</label>
-        <Input onChange={onTitleChange} value={TitleValue} />
-        <br />
-        <br />
+    // add contact to all items
+    let newItems = Items.map((item) => {
+      return {
+        ...item,
+        wechat: contact.wechat,
+        email: contact.email,
+        phone: contact.phone
+      }
+    })
+    setItems(newItems)
+    // use on submit
+    onSubmit();
+  }
 
-        <label>Description:</label>
-        <TextArea onChange={onDescriptionChange} value={DescriptionValue} />
-        <br />
-        <br />
+  const addContactCancel = () => {
+    setContactForm({ ...ContactForm, visible: false });
+  }
 
-        <label>Price($):</label>
-        <Input onChange={onPriceChange} value={PriceValue} type="number" />
-        <br />
-        <br />
-
-        <label>Tag: </label>
-        <br />
-        {tagsData.map((tag) => (
-          <CheckableTag
-            key={tag}
-            checked={TagValue.indexOf(tag) > -1}
-            onChange={(checked) => onTagChange(tag, checked)}
-          >
-            {tag}
-          </CheckableTag>
-        ))}
-        <br />
-        <br />
-      </Form>
-    );
-  };
+  const getCategoryByKey = (key) => {
+    const categoryData = [
+      { key: 1, value: "Commodity" },
+      { key: 2, value: "Electronics" },
+      { key: 3, value: "Furniture" },
+      { key: 4, value: "Food & Drinks" },
+      { key: 5, value: "Clothes / Bags / Shoes" },
+      { key: 6, value: "Makeup / Skin Care Products" },
+      { key: 7, value: "Others" }
+    ]
+    let categoryname = "None"
+    categoryData.map((item) => {
+      if (item.key == parseInt(key)) {
+        categoryname = item.value;
+      }
+    })
+    return categoryname
+  }
 
   const renderItemCards = Items.map((item, index) => {
     return (
@@ -243,11 +168,12 @@ function UploadProductPage(props) {
               <p>Description: {item.description}</p>
               <p>Price: {item.price}</p>
               <p>
-                Tag:{" "}
-                {item.tags.map((tag) => (
-                  <Tag>{tag}</Tag>
+                Place:{" "}
+                {item.places.map((place) => (
+                  <Tag>{place}</Tag>
                 ))}
               </p>
+              <p>Category: {getCategoryByKey(item.category)}</p>
             </Col>
             <Col lg={4} xs={24}>
               <Button
@@ -285,10 +211,10 @@ function UploadProductPage(props) {
           <h2>No post yet...</h2>
         </div>
       ) : (
-        <div style={{ width: "70%", margin: "3rem auto" }}>
-          <Row gutter={[16, 16]}>{renderItemCards}</Row>
-        </div>
-      )}
+          <div style={{ width: "70%", margin: "3rem auto" }}>
+            <Row gutter={[16, 16]}>{renderItemCards}</Row>
+          </div>
+        )}
       <br />
       <br />
 
@@ -298,28 +224,27 @@ function UploadProductPage(props) {
             Add
           </Button>
 
-          <Button style={{ width: "100px", margin: "25px" }} onClick={onSubmit}>
+          <Button style={{ width: "100px", margin: "25px" }} onClick={onAddContact}>
             Submit
           </Button>
         </div>
       ) : (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Button style={{ width: "100px", margin: "auto" }} onClick={onAdd}>
-            Add
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Button style={{ width: "100px", margin: "auto" }} onClick={onAdd}>
+              Add
           </Button>
-        </div>
-      )}
+          </div>
+        )}
 
       <div>
-        <Modal
-          title="New Product"
+        <ProductEditForm
           visible={FormValue.visible}
-          onOk={handleOk}
-          onCancel={handleCancel}
-          destroyOnClose={true}
-        >
-          {renderProductForm()}
-        </Modal>
+          handleOk={handleOk}
+          handleCancel={handleCancel}
+          edit={Edit}
+          currentItem={Edit ? CurrentItem : {}}
+          user={props.user}
+        />
       </div>
       <div>
         <CreateLongPicture
@@ -333,6 +258,14 @@ function UploadProductPage(props) {
           height={Items.reduce((total, cur) => {
             return total + cur.heights[0];
           }, 0)}
+        />
+      </div>
+      <div>
+        <ContactAddForm
+          visible={ContactForm.visible}
+          handleOk={addContactOk}
+          handleCancel={addContactCancel}
+          user={props.user}
         />
       </div>
     </div>

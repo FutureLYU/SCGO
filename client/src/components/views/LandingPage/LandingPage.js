@@ -4,7 +4,7 @@ import { Icon, Col, Card, Row, Button } from "antd";
 import ImageSlider from "../../utils/ImageSlider";
 import CheckBox from "./Sections/CheckBox";
 import RadioBox from "./Sections/RadioBox";
-import { tag, price } from "./Sections/Datas";
+import { place, category } from "./Sections/Datas";
 import SearchFeature from "./Sections/SearchFeature";
 
 const { Meta } = Card;
@@ -17,8 +17,8 @@ function LandingPage() {
   const [SearchTerms, setSearchTerms] = useState("");
 
   const [Filters, setFilters] = useState({
-    tag: [],
-    price: [],
+    place: [],
+    category: [],
   });
 
   useEffect(() => {
@@ -87,31 +87,22 @@ function LandingPage() {
     setSkip(0);
   };
 
-  const handlePrice = (value) => {
-    const data = price;
-    let array = [];
+  // const handlePrice = (value) => {
+  //   const data = price;
+  //   let array = [];
 
-    for (let key in data) {
-      if (data[key]._id === parseInt(value, 10)) {
-        array = data[key].array;
-      }
-    }
-    //console.log("array", array);
-    return array;
-  };
+  //   for (let key in data) {
+  //     if (data[key]._id === parseInt(value, 10)) {
+  //       array = data[key].array;
+  //     }
+  //   }
+  //   //console.log("array", array);
+  //   return array;
+  // };
 
   const handleFilters = (filters, category) => {
     const newFilters = { ...Filters };
-
     newFilters[category] = filters;
-
-    if (category === "price") {
-      let priceValues = handlePrice(filters);
-      newFilters[category] = priceValues;
-    }
-
-    //console.log(newFilters);
-
     showFilteredResults(newFilters);
     setFilters(newFilters);
   };
@@ -144,14 +135,20 @@ function LandingPage() {
       <Row gutter={[16, 16]}>
         <Col lg={12} xs={24}>
           <CheckBox
-            list={tag}
-            handleFilters={(filters) => handleFilters(filters, "tag")}
+            key={1}
+            defaultActiveKey={['0']}
+            list={place}
+            handleFilters={(filters) => handleFilters(filters, "place")}
+            filtername="Place"
           />
         </Col>
         <Col lg={12} xs={24}>
-          <RadioBox
-            list={price}
-            handleFilters={(filters) => handleFilters(filters, "price")}
+          <CheckBox
+            key={2}
+            defaultActiveKey={['0']}
+            list={category}
+            handleFilters={(filters) => handleFilters(filters, "category")}
+            filtername="Category"
           />
         </Col>
       </Row>

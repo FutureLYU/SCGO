@@ -38,8 +38,8 @@ function CheckBox(props) {
 
     return (
         <div>
-            <Collapse defaultActiveKey={['0']} >
-                <Panel header="Tags" key="1">
+            <Collapse defaultActiveKey={props.defaultActiveKey} >
+                <Panel header={props.filtername} key={props.key}>
                     {renderCheckboxLists()}
                 </Panel>
             </Collapse>
