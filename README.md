@@ -53,6 +53,13 @@ $ npm run dev
 
 # Update
 
+### 07-12 update landing / upload page (Harold)
+
+- 添加交易方式（means），交易地点（place）以及用于检索的Tag标签
+- 统一修改为key-value对应的方式，state中使用数字存储并将key-value对应关系存入utils/data.js
+- 使用栅格调整landing page filter布局；添加card标签；改为使用tag和category作为filter
+- 修改用户联系方式为“将自己的联系方式展示给买家”和“将买家的联系方式发送给我”
+
 ### 07-06 update upload page / landing page (Harold)
 
 - 将用于上传的ProductEditForm作为组件提取放置于client/src/components/utils文件夹下

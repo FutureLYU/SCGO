@@ -5,16 +5,7 @@ import Axios from "axios";
 import CreateLongPicture from "../../utils/CreatLongPicture/CreateLongPicture";
 import ProductEditForm from "../../utils/ProductEditForm";
 import ContactAddForm from "../../utils/ContactAddForm";
-
-const categoryData = [
-  { key: 1, value: "Commodity" },
-  { key: 2, value: "Electronics" },
-  { key: 3, value: "Furniture" },
-  { key: 4, value: "Food & Drinks" },
-  { key: 5, value: "Clothes / Bags / Shoes" },
-  { key: 6, value: "Makeup / Skin Care Products" },
-  { key: 7, value: "Others" }
-]
+import { categoryData, tagsData } from "../../utils/Data"
 
 function UploadProductPage(props) {
   const [Items, setItems] = useState([]);
@@ -44,10 +35,10 @@ function UploadProductPage(props) {
     setContactForm({ ...ContactForm, visible: true });
   }
 
-  const onSubmit = () => {
+  const onSubmit = (newItems) => {
 
     // submit all items into database
-    Axios.post("/api/product/uploadProduct", Items).then((response) => {
+    Axios.post("/api/product/uploadProduct", newItems).then((response) => {
       if (response.data.success) {
         // show success & long picture
         setshowPicture(true);
@@ -124,12 +115,12 @@ function UploadProductPage(props) {
         ...item,
         wechat: contact.wechat,
         email: contact.email,
-        phone: contact.phone
+        contactchoice: contact.contactchoice
       }
     })
     setItems(newItems)
     // use on submit
-    onSubmit();
+    onSubmit(newItems);
   }
 
   const addContactCancel = () => {
@@ -137,15 +128,6 @@ function UploadProductPage(props) {
   }
 
   const getCategoryByKey = (key) => {
-    const categoryData = [
-      { key: 1, value: "Commodity" },
-      { key: 2, value: "Electronics" },
-      { key: 3, value: "Furniture" },
-      { key: 4, value: "Food & Drinks" },
-      { key: 5, value: "Clothes / Bags / Shoes" },
-      { key: 6, value: "Makeup / Skin Care Products" },
-      { key: 7, value: "Others" }
-    ]
     let categoryname = "None"
     categoryData.map((item) => {
       if (item.key == parseInt(key)) {
@@ -153,6 +135,16 @@ function UploadProductPage(props) {
       }
     })
     return categoryname
+  }
+
+  const getTagByKey = (key) => {
+    let tagname = "None";
+    tagsData.map((tag) => {
+      if (tag.key === parseInt(key)) {
+        tagname = tag.value
+      }
+    })
+    return tagname
   }
 
   const renderItemCards = Items.map((item, index) => {
@@ -167,13 +159,8 @@ function UploadProductPage(props) {
               <p>Title: {item.title}</p>
               <p>Description: {item.description}</p>
               <p>Price: {item.price}</p>
-              <p>
-                Place:{" "}
-                {item.places.map((place) => (
-                  <Tag>{place}</Tag>
-                ))}
-              </p>
-              <p>Category: {getCategoryByKey(item.category)}</p>
+              <p>交易方式: <Tag style={{ width:"100px", textAlign:"center" }}>{getTagByKey(item.tag)}</Tag></p>
+              <p>物品种类: <Tag style={{ width:"100px", textAlign:"center" }}>{getCategoryByKey(item.category)}</Tag></p>
             </Col>
             <Col lg={4} xs={24}>
               <Button
@@ -247,6 +234,14 @@ function UploadProductPage(props) {
         />
       </div>
       <div>
+        <ContactAddForm
+          visible={ContactForm.visible}
+          handleOk={addContactOk}
+          handleCancel={addContactCancel}
+          user={props.user}
+        />
+      </div>
+      <div>
         <CreateLongPicture
           handleCancel={() => {
             setshowPicture(false);
@@ -258,14 +253,6 @@ function UploadProductPage(props) {
           height={Items.reduce((total, cur) => {
             return total + cur.heights[0];
           }, 0)}
-        />
-      </div>
-      <div>
-        <ContactAddForm
-          visible={ContactForm.visible}
-          handleOk={addContactOk}
-          handleCancel={addContactCancel}
-          user={props.user}
         />
       </div>
     </div>

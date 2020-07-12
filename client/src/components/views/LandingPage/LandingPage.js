@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
-import { Icon, Col, Card, Row, Button } from "antd";
+import { Icon, Col, Card, Row, Tag } from "antd";
 import ImageSlider from "../../utils/ImageSlider";
 import CheckBox from "./Sections/CheckBox";
-import RadioBox from "./Sections/RadioBox";
-import { place, category } from "./Sections/Datas";
+import { category, tags } from "./Sections/Datas";
 import SearchFeature from "./Sections/SearchFeature";
 
 const { Meta } = Card;
@@ -15,11 +14,22 @@ function LandingPage() {
   const [Limit, setLimit] = useState(8);
   const [PostSize, setPostSize] = useState();
   const [SearchTerms, setSearchTerms] = useState("");
+  
 
   const [Filters, setFilters] = useState({
-    place: [],
     category: [],
+    tag: []
   });
+
+  const getTagByKey = (key) => {
+    let tagname = "None";
+    tags.map((tag) => {
+      if (tag._id === key) {
+        tagname = tag.name
+      }
+    })
+    return tagname
+  }
 
   useEffect(() => {
     const variables = {
@@ -71,7 +81,16 @@ function LandingPage() {
             </a>
           }
         >
-          <Meta title={product.title} description={`$${product.price}`} />
+          <Meta 
+            title={product.title} 
+            description={
+              <div>
+                {`$${product.price}`}
+                <Tag style={{float:'right'}}>{getTagByKey(product.tag)}</Tag>
+              </div>
+            } 
+          />
+
         </Card>
       </Col>
     );
@@ -86,19 +105,6 @@ function LandingPage() {
     getProducts(variables);
     setSkip(0);
   };
-
-  // const handlePrice = (value) => {
-  //   const data = price;
-  //   let array = [];
-
-  //   for (let key in data) {
-  //     if (data[key]._id === parseInt(value, 10)) {
-  //       array = data[key].array;
-  //     }
-  //   }
-  //   //console.log("array", array);
-  //   return array;
-  // };
 
   const handleFilters = (filters, category) => {
     const newFilters = { ...Filters };
@@ -126,7 +132,7 @@ function LandingPage() {
       <div style={{ textAlign: "center" }}>
         <h2>
           {" "}
-          Let's Travel Anywhere <Icon type="rocket" />{" "}
+          Let's Sell &amp; Buy <Icon type="rocket" />{" "}
         </h2>
       </div>
 
@@ -137,9 +143,10 @@ function LandingPage() {
           <CheckBox
             key={1}
             defaultActiveKey={['0']}
-            list={place}
-            handleFilters={(filters) => handleFilters(filters, "place")}
-            filtername="Place"
+            list={tags}
+            handleFilters={(filters) => handleFilters(filters, "tag")}
+            filtername="交易方式"
+            category="tag"
           />
         </Col>
         <Col lg={12} xs={24}>
@@ -148,7 +155,8 @@ function LandingPage() {
             defaultActiveKey={['0']}
             list={category}
             handleFilters={(filters) => handleFilters(filters, "category")}
-            filtername="Category"
+            filtername="物品种类"
+            category="category"
           />
         </Col>
       </Row>

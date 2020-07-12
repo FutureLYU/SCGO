@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Checkbox, Collapse } from 'antd';
+import { Checkbox, Collapse, Row, Col } from 'antd';
 
 const { Panel } = Collapse
 
@@ -26,21 +26,25 @@ function CheckBox(props) {
     }
 
     const renderCheckboxLists = () => props.list && props.list.map((value, index) => (
-        <React.Fragment key={index}>
-            <Checkbox
-                onChange={() => handleToggle(value._id)}
-                type="checkbox"
-                checked={Checked.indexOf(value._id) === -1 ? false : true}
-            />&nbsp;&nbsp;
-            <span>{value.name}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </React.Fragment>
+        <Col lg={6} xs={24}>
+            <React.Fragment key={index}> 
+                <Checkbox
+                    onChange={() => handleToggle(value._id)}
+                    type="checkbox"
+                    checked={Checked.indexOf(value._id) === -1 ? false : true}
+                />&nbsp;&nbsp;
+                <span style={{fontSize:"10px"}}>{value.name}</span>
+            </React.Fragment>
+        </Col>
     ))
 
     return (
         <div>
             <Collapse defaultActiveKey={props.defaultActiveKey} >
                 <Panel header={props.filtername} key={props.key}>
-                    {renderCheckboxLists()}
+                    <Row gutter={[4, 4]}>
+                        {renderCheckboxLists()}
+                    </Row>
                 </Panel>
             </Collapse>
         </div>

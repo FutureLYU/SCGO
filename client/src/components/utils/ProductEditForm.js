@@ -1,27 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Input, Modal, Tag } from "antd";
+import { Form, Input, Modal, Select, Radio } from "antd";
 import FileUpload from './FileUpload';
+import { placesData, categoryData, meansData } from "./Data";
 
 const { TextArea } = Input;
-const { CheckableTag } = Tag;
-
-const placesData = ["Lorenzo", "Gateway", "K-town", "Downtown", "West of USC", "USC", "Delivery", "Others"];
-const categoryData = [
-    { key: 1, value: "Commodity" }, 
-    { key: 2, value: "Electronics"}, 
-    { key: 3, value: "Furniture"}, 
-    { key: 4, value: "Food & Drinks"}, 
-    { key: 5, value: "Clothes / Bags / Shoes"},
-    { key: 6, value: "Makeup / Skin Care Products"},
-    { key: 7, value: "Others"}
-]
+const { Option } = Select;
 
 function ProductEditForm(props) {
     const [TitleValue, setTitleValue] = useState("");
     const [DescriptionValue, setDescriptionValue] = useState("");
     const [PriceValue, setPriceValue] = useState(0);
-    const [PlaceValue, setPlaceValue] = useState([]);
-    const [Category, setCategory] = useState(1)
+    const [Means, setMeans] = useState(0)
+    const [PlaceValue, setPlaceValue] = useState(-1);
+    const [Category, setCategory] = useState(0)
     const [Images, setImages] = useState([]);
     const [Heights, setHeights] = useState([]);
 
@@ -30,6 +21,7 @@ function ProductEditForm(props) {
             setTitleValue(props.currentItem.title);
             setDescriptionValue(props.currentItem.description);
             setPriceValue(props.currentItem.price);
+            setMeans(props.currentItem.means)
             setPlaceValue(props.currentItem.places);
             setCategory(props.currentItem.category)
             setImages(props.currentItem.images);
@@ -46,12 +38,9 @@ function ProductEditForm(props) {
     };
     const onDescriptionChange = (event) => { setDescriptionValue(event.currentTarget.value) };
     const onPriceChange = (event) => { setPriceValue(event.currentTarget.value) };
-    const onPlaceChange = (place, checked) => {
-        const selectedPlaces = [...PlaceValue];
-        const nextSelectedPlaces = checked ? [...selectedPlaces, place]:selectedPlaces.filter((t) => t !== place);
-        setPlaceValue(nextSelectedPlaces);
-    };
-    const onCategoryChange = (event) => { setCategory(event.currentTarget.value) }
+    const onMeansChange = (event) => { setMeans(event.target.value) };
+    const onPlaceChange = (value) => { setPlaceValue(value) };
+    const onCategoryChange = (value) => { setCategory(value) };
     const updateImages = (newImages, newHeights) => {
         setImages(newImages);
         setHeights(newHeights);
@@ -61,15 +50,24 @@ function ProductEditForm(props) {
         setTitleValue("");
         setDescriptionValue("");
         setPriceValue(0);
-        setPlaceValue([]);
-        setCategory(1);
+        setMeans(0);
+        setPlaceValue(-1);
+        setCategory(0);
         setImages([]);
         setHeights([]);
+    }
+
+    const getTagValue = (means, places) => {
+        return means === 0 ? places : means + 5
     }
 
     const handleOk = () => {
         if (!TitleValue || !DescriptionValue || !PriceValue || !Images.length) {
             return alert("fill all the fields first!");
+        }
+
+        if (Means === 0 && PlaceValue === -1) {
+            return alert("至少选择一个自取地点！")
         }
 
         const currentItem = {
@@ -79,7 +77,9 @@ function ProductEditForm(props) {
             price: PriceValue,
             images: Images,
             heights: Heights,
+            means: Means,
             places: PlaceValue,
+            tag: getTagValue(Means, PlaceValue),
             category: Category
         }
 
@@ -120,24 +120,34 @@ function ProductEditForm(props) {
                     <label>Price($):</label>
                     <Input onChange={onPriceChange} value={PriceValue} type="number" />
                     <br /><br />
-            
-                    <label>Place of Transaction: </label><br />
-                    {placesData.map((place) => (
-                        <CheckableTag
-                            key={place}
-                            checked={PlaceValue.indexOf(place) > -1}
-                            onChange={(checked) => onPlaceChange(place, checked)}
-                        >
-                            {place}
-                        </CheckableTag>
-                    ))}
+
+                    <label>交易方式:</label>&nbsp;
+                    <Radio.Group onChange={onMeansChange} value={Means}>
+                        {meansData.map((mean) => <Radio value={mean.key}>{mean.value}</Radio>)}
+                    </Radio.Group>
                     <br /><br />
-                    <label>Category: </label><br />
-                    <select onChange={onCategoryChange} value={Category}>
+
+                    <label>自取地点:</label>&nbsp;
+                    <Select
+                        style={{ width: 200 }}
+                        placeholder="select a place"
+                        optionFilterProp="children"
+                        onChange={onPlaceChange}
+                        filterOption={(input, option) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
+                        disabled={Means}
+                    >
+                        {placesData.map((place) => <Option value={place.key}>{place.value}</Option>)}
+                    </Select>
+                    <br /><br />
+
+                    <label>物品种类:</label>&nbsp;
+                    <Select style={{ width: 200 }} onChange={onCategoryChange} value={Category}>
                         {categoryData.map(item => (
-                            <option key={item.key} value={item.key}>{item.value} </option>
+                            <Option key={item.key} value={item.key}>{item.value} </Option>
                         ))}
-                    </select>
+                    </Select>
                     <br /><br />
                 </Form>
             </Modal>

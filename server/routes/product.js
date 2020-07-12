@@ -56,6 +56,8 @@ router.post("/uploadProduct", auth, (req, res) => {
 
     // save all the data we got from the client into the DB 
     const products = req.body.map((item) => new Product(item))
+    console.log(req.body)
+    console.log(products)
 
     Product.insertMany(products, (err) => {
         if (err) return res.status(400).json({ success: false, err })
@@ -74,21 +76,14 @@ router.post("/getProducts", (req, res) => {
 
     let findArgs = {};
     let term = req.body.searchTerm;
-
+    console.log(req.body.filters)
     for (let key in req.body.filters) {
 
         if (req.body.filters[key].length > 0) {
-            if (key === "price") {
-                findArgs[key] = {
-                    $gte: req.body.filters[key][0],
-                    $lte: req.body.filters[key][1]
-                }
-            } else {
-                findArgs[key] = req.body.filters[key];
-            }
+            findArgs[key] = req.body.filters[key];
         }
     }
-
+    console.log(findArgs)
     // console.log(findArgs)
 
     if (term) {
