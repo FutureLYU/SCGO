@@ -12,6 +12,7 @@ import DetailProductPage from "./views/DetailProductPage/DetailProductPage";
 import CartPage from "./views/CartPage/CartPage";
 import HistoryPage from "./views/HistoryPage/HistoryPage";
 import ChangePasswordPage from "./views/ChangePasswordPage/ChangePasswordPage";
+import UserPage from "./views/UserPage/UserPage";
 
 function App() {
   return (
@@ -33,11 +34,12 @@ function App() {
             component={Auth(DetailProductPage, null)}
           />
           <Route exact path="/user/cart" component={Auth(CartPage, true)} />
+          <Route exact path="/user/item" component={Auth(UserPage, true)} />
           <Route exact path="/history" component={Auth(HistoryPage, true)} />
           <Route
             exact
             path="/change"
-            component={Auth(ChangePasswordPage, false)}
+            component={Auth(ChangePasswordPage, null)}
           />
         </Switch>
       </div>
