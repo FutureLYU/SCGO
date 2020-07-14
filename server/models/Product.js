@@ -26,12 +26,20 @@ const productSchema = mongoose.Schema({
         default: []
     },
     places: {
-        type: Array,
-        default: []
+        type: Number,
+        default: -1
+    },
+    means: {
+        type: Number,
+        default: 0
+    },
+    tag: {
+        type: Number,
+        default: 0
     },
     category: {
         type: Number,
-        default: 1
+        default: 0
     },
     wechat: {
         type: String,
@@ -41,9 +49,9 @@ const productSchema = mongoose.Schema({
         type: String,
         default: ""
     },
-    phone: {
-        type: String,
-        default: ""
+    contactchoice: {
+        type: Number,
+        default: 0
     },
     sold: {
         type: Number,

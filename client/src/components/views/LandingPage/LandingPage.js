@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
-import { Icon, Col, Card, Row, Button } from "antd";
+import { Icon, Col, Card, Row, Tag } from "antd";
 import ImageSlider from "../../utils/ImageSlider";
 import CheckBox from "./Sections/CheckBox";
-import RadioBox from "./Sections/RadioBox";
-import { place, category } from "./Sections/Datas";
+import { category, tags } from "./Sections/Datas";
 import SearchFeature from "./Sections/SearchFeature";
+import Masonry from "react-masonry-component";
 
 const { Meta } = Card;
 
@@ -17,9 +17,19 @@ function LandingPage() {
   const [SearchTerms, setSearchTerms] = useState("");
 
   const [Filters, setFilters] = useState({
-    place: [],
     category: [],
+    tag: [],
   });
+
+  const getTagByKey = (key) => {
+    let tagname = "None";
+    tags.map((tag) => {
+      if (tag._id === key) {
+        tagname = tag.name;
+      }
+    });
+    return tagname;
+  };
 
   useEffect(() => {
     const variables = {
@@ -61,19 +71,36 @@ function LandingPage() {
 
   const renderCards = Products.map((product, index) => {
     return (
-      <Col lg={6} md={8} xs={24}>
+      <div
+        style={{
+          marginRight: "15px",
+          marginBottom: "10px",
+          display: "inline-block",
+        }}
+      >
         <Card
+          style={{ width: "270px" }}
           hoverable={true}
           cover={
             <a href={`/product/${product._id}`}>
-              {" "}
-              <ImageSlider id="ProductImages" images={product.images} />
+              <img
+                style={{ width: "270px", height: `${752 / 270}%` }}
+                src={`http://localhost:5000/${product.images[0]}`}
+              />
             </a>
           }
         >
-          <Meta title={product.title} description={`$${product.price}`} />
+          <Meta
+            title={product.title}
+            description={
+              <div>
+                {`$${product.price}`}
+                <Tag style={{ float: "right" }}>{getTagByKey(product.tag)}</Tag>
+              </div>
+            }
+          />
         </Card>
-      </Col>
+      </div>
     );
   });
 
@@ -86,19 +113,6 @@ function LandingPage() {
     getProducts(variables);
     setSkip(0);
   };
-
-  // const handlePrice = (value) => {
-  //   const data = price;
-  //   let array = [];
-
-  //   for (let key in data) {
-  //     if (data[key]._id === parseInt(value, 10)) {
-  //       array = data[key].array;
-  //     }
-  //   }
-  //   //console.log("array", array);
-  //   return array;
-  // };
 
   const handleFilters = (filters, category) => {
     const newFilters = { ...Filters };
@@ -126,7 +140,7 @@ function LandingPage() {
       <div style={{ textAlign: "center" }}>
         <h2>
           {" "}
-          Let's Travel Anywhere <Icon type="rocket" />{" "}
+          Let's Sell &amp; Buy <Icon type="rocket" />{" "}
         </h2>
       </div>
 
@@ -136,19 +150,21 @@ function LandingPage() {
         <Col lg={12} xs={24}>
           <CheckBox
             key={1}
-            defaultActiveKey={['0']}
-            list={place}
-            handleFilters={(filters) => handleFilters(filters, "place")}
-            filtername="Place"
+            defaultActiveKey={["0"]}
+            list={tags}
+            handleFilters={(filters) => handleFilters(filters, "tag")}
+            filtername="交易方式"
+            category="tag"
           />
         </Col>
         <Col lg={12} xs={24}>
           <CheckBox
             key={2}
-            defaultActiveKey={['0']}
+            defaultActiveKey={["0"]}
             list={category}
             handleFilters={(filters) => handleFilters(filters, "category")}
-            filtername="Category"
+            filtername="物品种类"
+            category="category"
           />
         </Col>
       </Row>
@@ -177,7 +193,14 @@ function LandingPage() {
         </div>
       ) : (
         <div>
-          <Row gutter={[16, 16]}>{renderCards}</Row>
+          <Masonry
+            className={"my-gallery-class"} // default ''
+            options={{ transitionDuration: 2 }} // default {}
+            disableImagesLoaded={false} // default false
+            updateOnEachImageLoad={false} // default false and works only if disableImagesLoaded is false
+          >
+            {renderCards}
+          </Masonry>
         </div>
       )}
       <br />

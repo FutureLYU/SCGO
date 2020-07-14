@@ -53,13 +53,29 @@ $ npm run dev
 
 # Update
 
+### 07-13 update (hanxi)
+
+- 修改 rightMenu 加入用户功能组
+- 添加 UserPage 加入 Hover 功能
+- 添加 VisitorPage 无 Hover 功能 user/:userid
+- LandingPage 及 user visitor 瀑布流加入
+- 待加入 “下架” “修改” 逻辑
+
+### 07-12 update landing / upload page (Harold)
+
+- 添加交易方式（means），交易地点（place）以及用于检索的 Tag 标签
+- 统一修改为 key-value 对应的方式，state 中使用数字存储并将 key-value 对应关系存入 utils/data.js
+- 使用栅格调整 landing page filter 布局；添加 card 标签；改为使用 tag 和 category 作为 filter
+- 修改用户联系方式为“将自己的联系方式展示给买家”和“将买家的联系方式发送给我”
+- 修改 detail page，添加联系卖家以及新的信息
+
 ### 07-06 update upload page / landing page (Harold)
 
-- 将用于上传的ProductEditForm作为组件提取放置于client/src/components/utils文件夹下
-- 利用objectFit解决图片拉伸问题; 添加title字数限制
-- 添加Category / 交易地点内容到ProductEditForm
-- 修改图片上传限制，添加Preview state用于图片预览
-- 修改landing page filter并添加search按钮
+- 将用于上传的 ProductEditForm 作为组件提取放置于 client/src/components/utils 文件夹下
+- 利用 objectFit 解决图片拉伸问题; 添加 title 字数限制
+- 添加 Category / 交易地点内容到 ProductEditForm
+- 修改图片上传限制，添加 Preview state 用于图片预览
+- 修改 landing page filter 并添加 search 按钮
 - 添加用户联系方式
 
 ### 07-01 update (hanxi)

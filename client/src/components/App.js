@@ -13,6 +13,7 @@ import CartPage from "./views/CartPage/CartPage";
 import HistoryPage from "./views/HistoryPage/HistoryPage";
 import ChangePasswordPage from "./views/ChangePasswordPage/ChangePasswordPage";
 import UserPage from "./views/UserPage/UserPage";
+import VisitorPage from "./views/VisitorPage/VisitorPage";
 
 function App() {
   return (
@@ -35,6 +36,11 @@ function App() {
           />
           <Route exact path="/user/cart" component={Auth(CartPage, true)} />
           <Route exact path="/user/item" component={Auth(UserPage, true)} />
+          <Route
+            exact
+            path="/user/:userid"
+            component={Auth(VisitorPage, null)}
+          />
           <Route exact path="/history" component={Auth(HistoryPage, true)} />
           <Route
             exact

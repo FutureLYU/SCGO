@@ -1,33 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import Masonry from "react-masonry-component";
-import { Icon, Card, Popover, Button, Alert } from "antd";
+import { Icon, Card } from "antd";
 
 function UserPage(props) {
   const [Products, setProducts] = useState([]);
-  const handleDelete = () => {
-    alert("准备删除功能");
-  };
-  const handleEdit = () => {
-    alert("编辑功能");
-  };
-  const content = (
-    <div>
-      <div>
-        <a onClick={handleDelete}>下架删除</a>
-      </div>
-      <div>
-        <a onClick={handleEdit}>修改内容</a>
-      </div>
-    </div>
-  );
+  const userid = props.match.params.userid;
 
   useEffect(() => {
-    if (props.user.userData) {
-      const variables = { userid: props.user.userData._id };
+    if (userid) {
+      const variables = { userid: userid };
       getProducts(variables);
     }
-  }, [props.user]);
+  }, [userid]);
 
   const getProducts = (variables) => {
     Axios.post("/api/product/getByUser", variables).then((response) => {
@@ -49,25 +34,20 @@ function UserPage(props) {
           display: "inline-block",
         }}
       >
-        <Popover content={content} title="Edit">
-          <Card
-            style={{ width: "270px" }}
-            hoverable={true}
-            cover={
-              <a href={`/product/${product._id}`}>
-                <img
-                  style={{ width: "270px", height: `${752 / 270}%` }}
-                  src={`http://localhost:5000/${product.images[0]}`}
-                />
-              </a>
-            }
-          >
-            <Card.Meta
-              title={product.title}
-              description={`$${product.price}`}
-            />
-          </Card>
-        </Popover>
+        <Card
+          style={{ width: "270px" }}
+          hoverable={true}
+          cover={
+            <a href={`/product/${product._id}`}>
+              <img
+                style={{ width: "270px", height: `${752 / 270}%` }}
+                src={`http://localhost:5000/${product.images[0]}`}
+              />
+            </a>
+          }
+        >
+          <Card.Meta title={product.title} description={`$${product.price}`} />
+        </Card>
       </div>
       // </Col>
     );
