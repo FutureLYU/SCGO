@@ -53,6 +53,10 @@ $ npm run dev
 
 # Update
 
+### 07-16 update (hanxi)
+
+- 加入 landingPage 的 infinite-scroller 功能
+
 ### 07-13 update (hanxi)
 
 - 修改 rightMenu 加入用户功能组

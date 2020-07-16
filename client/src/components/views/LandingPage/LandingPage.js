@@ -5,6 +5,7 @@ import CheckBox from "./Sections/CheckBox";
 import { category, tags } from "./Sections/Datas";
 import SearchFeature from "./Sections/SearchFeature";
 import Masonry from "react-masonry-component";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const { Meta } = Card;
 
@@ -12,8 +13,8 @@ function LandingPage() {
   const [Products, setProducts] = useState([]);
   const [Skip, setSkip] = useState(0);
   const [Limit, setLimit] = useState(8);
-  const [PostSize, setPostSize] = useState(8);
   const [SearchTerms, setSearchTerms] = useState("");
+  const [HasMore, setHasMore] = useState(true);
   const [Filters, setFilters] = useState({
     category: [],
     tag: [],
@@ -34,121 +35,37 @@ function LandingPage() {
       skip: Skip,
       limit: Limit,
     };
-
     getProducts(variables);
-
-    function getScrollTop() {
-      var scrollTop = 0,
-        bodyScrollTop = 0,
-        documentScrollTop = 0;
-      if (document.body) {
-        bodyScrollTop = document.body.scrollTop;
-      }
-      if (document.documentElement) {
-        documentScrollTop = document.documentElement.scrollTop;
-      }
-      scrollTop =
-        bodyScrollTop - documentScrollTop > 0
-          ? bodyScrollTop
-          : documentScrollTop;
-      return scrollTop;
-    }
-    function getScrollHeight() {
-      var scrollHeight = 0;
-      if (document.body) {
-        var bSH = document.body.scrollHeight;
-      }
-      if (document.documentElement) {
-        var dSH = document.documentElement.scrollHeight;
-      }
-      scrollHeight = bSH - dSH > 0 ? bSH : dSH;
-      return scrollHeight;
-    }
-    function getWindowHeight() {
-      var windowHeight = 0;
-      if (document.compatMode == "CSS1Compat") {
-        windowHeight = document.documentElement.clientHeight;
-      } else {
-        windowHeight = document.body.clientHeight;
-      }
-      return windowHeight;
-    }
-    window.addEventListener("scroll", () => {
-      const isBottom =
-        getScrollTop() + getWindowHeight() + 20 > getScrollHeight();
-      if (isBottom) {
-        onLoadMore();
-      }
-    });
-    return () => {
-      window.removeEventListener("scroll", () => {});
-    };
   }, []);
 
   const getProducts = (variables) => {
     Axios.post("/api/product/getProducts", variables).then((response) => {
       if (response.data.success) {
+        setHasMore(response.data.postSize < Limit ? false : true);
         if (variables.loadMore) {
           setProducts([...Products, ...response.data.products]);
         } else {
           setProducts(response.data.products);
         }
-        setPostSize(response.data.postSize);
       } else {
         alert("Failed to fectch product datas");
       }
     });
   };
 
-  const onLoadMore = () => {
-    console.log(PostSize, Limit, Products);
-    if (PostSize >= Limit) {
-      let skip = Skip + Limit;
-      const variables = {
-        skip: skip,
-        limit: Limit,
-        loadMore: true,
-        filters: Filters,
-        searchTerm: SearchTerms,
-      };
-      getProducts(variables);
-      setSkip(skip);
-    }
-  };
-  const renderCards = Products.map((product, index) => {
-    return (
-      <div
-        style={{
-          marginRight: "15px",
-          marginBottom: "10px",
-          display: "inline-block",
-        }}
-      >
-        <Card
-          style={{ width: "270px" }}
-          hoverable={true}
-          cover={
-            <a href={`/product/${product._id}`}>
-              <img
-                style={{ width: "270px", height: `${752 / 270}%` }}
-                src={`http://localhost:5000/${product.images[0]}`}
-              />
-            </a>
-          }
-        >
-          <Meta
-            title={product.title}
-            description={
-              <div>
-                {`$${product.price}`}
-                <Tag style={{ float: "right" }}>{getTagByKey(product.tag)}</Tag>
-              </div>
-            }
-          />
-        </Card>
-      </div>
-    );
-  });
+  function onLoadMore() {
+    console.log("loadmore");
+    let skip = Skip + Limit;
+    const variables = {
+      skip: skip,
+      limit: Limit,
+      loadMore: true,
+      filters: Filters,
+      searchTerm: SearchTerms,
+    };
+    getProducts(variables);
+    setSkip(skip);
+  }
 
   const showFilteredResults = (filters) => {
     const variables = {
@@ -182,7 +99,14 @@ function LandingPage() {
   };
 
   return (
-    <div style={{ height: "100%", width: "75%", margin: "3rem auto" }}>
+    <div
+      style={{
+        height: "100%",
+        width: "75%",
+        margin: "3rem auto",
+        overflow: "hidden",
+      }}
+    >
       <div style={{ textAlign: "center" }}>
         <h2>
           {" "}
@@ -238,26 +162,64 @@ function LandingPage() {
           <h2>No post yet...</h2>
         </div>
       ) : (
-        <div>
-          <Masonry
-            className={"my-gallery-class"} // default ''
-            options={{ transitionDuration: 2 }} // default {}
-            disableImagesLoaded={false} // default false
-            updateOnEachImageLoad={false} // default false and works only if disableImagesLoaded is false
+        <div style={{ width: "102%", overflowX: "hidden", overflowY: "auto" }}>
+          <InfiniteScroll
+            dataLength={Products.length} //This is important field to render the next data
+            next={() => onLoadMore()}
+            hasMore={HasMore}
+            loader={<h4>Loading...</h4>}
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
           >
-            {renderCards}
-          </Masonry>
+            <Masonry
+              className={"my-gallery-class"} // default ''
+              options={{ transitionDuration: 2 }} // default {}
+              disableImagesLoaded={false} // default false
+              updateOnEachImageLoad={false} // default false and works only if disableImagesLoaded is false
+            >
+              {Products.map((product, index) => (
+                <div
+                  style={{
+                    marginRight: "15px",
+                    marginBottom: "10px",
+                    display: "inline-block",
+                  }}
+                >
+                  <Card
+                    style={{ width: "270px" }}
+                    hoverable={true}
+                    cover={
+                      <a href={`/product/${product._id}`}>
+                        <img
+                          style={{ width: "270px", height: `${752 / 270}%` }}
+                          src={`http://localhost:5000/${product.images[0]}`}
+                        />
+                      </a>
+                    }
+                  >
+                    <Meta
+                      title={product.title}
+                      description={
+                        <div>
+                          {`$${product.price}`}
+                          <Tag style={{ float: "right" }}>
+                            {getTagByKey(product.tag)}
+                          </Tag>
+                        </div>
+                      }
+                    />
+                  </Card>
+                </div>
+              ))}
+            </Masonry>
+          </InfiniteScroll>
         </div>
       )}
       <br />
       <br />
-
-      {/*console.log(Products)*/}
-      {/*PostSize >= Limit && (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <button onClick={onLoadMore}>Load More</button>
-        </div>
-      )*/}
     </div>
   );
 }
