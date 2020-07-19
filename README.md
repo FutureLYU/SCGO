@@ -53,17 +53,21 @@ $ npm run dev
 
 # Update
 
+### 07-19 update (hanxi)
+
+- 添加了 AdminPage
+
 ### 07-18 update (Harold)
 
-- 添加detail page到visitor page的链接
-- 修改userpage的更新方式
+- 添加 detail page 到 visitor page 的链接
+- 修改 userpage 的更新方式
 
 ### 07-16 update (Harold)
 
 - 添加对物品名字的模糊匹配
 - 添加空白搜索‘返回’选择
-- 添加userpage的edit和delete功能
-- 修改原有history功能并添加‘下架原因‘
+- 添加 userpage 的 edit 和 delete 功能
+- 修改原有 history 功能并添加‘下架原因‘
 
 ### 07-16 update (hanxi)
 
