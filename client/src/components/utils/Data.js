@@ -32,12 +32,18 @@ const tagsData = [
     { key: 5, value: "LA其他地区自取" },
     { key: 6, value: "USC附近可送" },
     { key: 7, value: "地点可商议" }
-
 ];
+
+const reasonsData = [
+    { key: 0, value: "已出售" },
+    { key: 1, value: "物品信息错误" },
+    { key: 2, value: "其他原因" }
+]
 
 export {
     placesData,
     categoryData,
     meansData,
-    tagsData
+    tagsData,
+    reasonsData
 }

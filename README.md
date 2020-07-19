@@ -53,6 +53,18 @@ $ npm run dev
 
 # Update
 
+### 07-18 update (Harold)
+
+- 添加detail page到visitor page的链接
+- 修改userpage的更新方式
+
+### 07-16 update (Harold)
+
+- 添加对物品名字的模糊匹配
+- 添加空白搜索‘返回’选择
+- 添加userpage的edit和delete功能
+- 修改原有history功能并添加‘下架原因‘
+
 ### 07-16 update (hanxi)
 
 - 加入 landingPage 的 infinite-scroller 功能

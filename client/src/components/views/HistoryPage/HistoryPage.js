@@ -12,10 +12,10 @@ function HistoryPage(props) {
             <table>
                 <thead>
                     <tr>
-                        <th>Payment Id</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Date of Purchase</th>
+                        <th>商品名称</th>
+                        <th>商品价格</th>
+                        <th>下架时间</th>
+                        <th>下架原因</th>
                     </tr>
                 </thead>
 
@@ -24,10 +24,10 @@ function HistoryPage(props) {
                     {props.user.userData && props.user.userData.history &&
                         props.user.userData.history.map(item => (
                             <tr key={item.id}>
-                                <td>{item.id}</td>
+                                <td>{item.title}</td>
                                 <td>{item.price}</td>
-                                <td>{item.quantity}</td>
-                                <td>{item.dateOfPurchase}</td>
+                                <td>{item.dateOfDelete}</td>
+                                <td>{item.reason}</td>
                             </tr>
                         ))}
 

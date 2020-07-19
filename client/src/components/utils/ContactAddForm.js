@@ -30,8 +30,8 @@ function ContactAddForm(props) {
     }
 
     const handleOk = () => {
-        if (!WeChat && !Email) {
-            return alert("fill at least one of the contact way");
+        if ((ContactChoice === 0 && !WeChat) || (ContactChoice===1 && !Email)) {
+            return alert("fill one of the contact way");
         }
 
         const contact = {
@@ -60,19 +60,19 @@ function ContactAddForm(props) {
             >
                 <Radio.Group onChange={onContactChange} value={ContactChoice}>
                     <Radio value={0}>
-                        将买家信息通过邮箱告诉我<br />
-                        Email: { 
+                        希望买家直接通过微信联系我<br />
+                        微信: { 
                         ContactChoice === 0 ? 
-                        <Input onChange={onEmailChange} value={Email} /> : 
-                        <Input onChange={onEmailChange} value={Email} disabled /> 
+                        <Input onChange={onWeChatChange} value={WeChat} /> : 
+                        <Input onChange={onWeChatChange} value={WeChat} disabled /> 
                         }
                     </Radio><br /><br />
                     <Radio value={1}>
-                        将我的信息直接展示给买家<br />
-                        WeChat: { 
+                        希望买家通过其他方式联系我<br />
+                        其他: { 
                         ContactChoice === 1 ? 
-                        <Input onChange={onWeChatChange} value={WeChat} /> :
-                        <Input onChange={onWeChatChange} value={WeChat} disabled />}
+                        <Input onChange={onEmailChange} value={Email} /> :
+                        <Input onChange={onEmailChange} value={Email} disabled />}
                     </Radio>
                 </Radio.Group>
             </Modal>
