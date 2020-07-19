@@ -26,7 +26,7 @@ const userSchema = mongoose.Schema({
     type: Array,
     default: [],
   },
-  upload:{
+  upload: {
     type: Array,
     default: [],
   },

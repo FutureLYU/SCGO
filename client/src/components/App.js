@@ -14,13 +14,14 @@ import HistoryPage from "./views/HistoryPage/HistoryPage";
 import ChangePasswordPage from "./views/ChangePasswordPage/ChangePasswordPage";
 import UserPage from "./views/UserPage/UserPage";
 import VisitorPage from "./views/VisitorPage/VisitorPage";
-
+import AdminPage from "./views/AdminPage/AdminPage";
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <NavBar />
       <div style={{ paddingTop: "75px", minHeight: "calc(100vh - 80px)" }}>
         <Switch>
+          <Route exact path="/admin" component={Auth(AdminPage, true)} />
           <Route exact path="/" component={Auth(LandingPage, null)} />
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
