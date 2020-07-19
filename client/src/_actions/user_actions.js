@@ -7,7 +7,8 @@ import {
     ADD_TO_CART_USER,
     GET_CART_ITEMS_USER,
     REMOVE_CART_ITEM_USER,
-    ON_SUCCESS_BUY_USER
+    ON_SUCCESS_BUY_USER,
+    ON_DELETE_ITEM
 } from './types';
 import { USER_SERVER } from '../components/Config.js';
 
@@ -124,7 +125,15 @@ export function onSuccessBuy(data) {
     }
 }
 
+export function onDeleteItem(data) {
 
+    const request = axios.post(`${USER_SERVER}/deleteProduct`, data)
+        .then(response => response.data);
+    return {
+        type: ON_DELETE_ITEM,
+        payload: request
+    }
+}
 
 
 

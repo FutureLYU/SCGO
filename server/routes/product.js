@@ -68,6 +68,20 @@ router.post("/uploadProduct", auth, (req, res) => {
   });
 });
 
+router.post("/updateProduct", auth, (req, res) => {
+  // save new product into the DB
+  const product = req.body;
+
+  Product.findOneAndUpdate(
+    { _id: product._id },
+    product,
+    (err) => {
+      if (err) return res.json({ success: false, err });
+      return res.status(200).json({ success: true })
+    }
+  )
+});
+
 router.post("/getProducts", (req, res) => {
   let order = req.body.order ? req.body.order : "desc";
   let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
@@ -86,7 +100,7 @@ router.post("/getProducts", (req, res) => {
 
   if (term) {
     Product.find(findArgs)
-      .find({ $text: { $search: term } })
+      .find({ title: { $regex: term } })
       .populate("writer")
       .sort([[sortBy, order]])
       .skip(skip)

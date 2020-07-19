@@ -1,26 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import Masonry from "react-masonry-component";
-import { Icon, Card, Popover, Button, Alert } from "antd";
+import { Icon, Card, Popover } from "antd";
+import ProductEditForm from '../../utils/ProductEditForm';
+import ProductDeleteForm from '../../utils/ProductDeleteForm';
+import { onDeleteItem } from '../../../_actions/user_actions';
+import { useDispatch } from 'react-redux';
 
 function UserPage(props) {
+  const dispatch = useDispatch();
   const [Products, setProducts] = useState([]);
-  const handleDelete = () => {
-    alert("准备删除功能");
-  };
-  const handleEdit = () => {
-    alert("编辑功能");
-  };
-  const content = (
-    <div>
-      <div>
-        <a onClick={handleDelete}>下架删除</a>
-      </div>
-      <div>
-        <a onClick={handleEdit}>修改内容</a>
-      </div>
-    </div>
-  );
+  const [FormValue, setFormValue] = useState({ visible: false });
+  const [CurrentItem, setCurrentItem] = useState({})
+  const [DeleteFormValue, setDeleteFormValue] = useState({ visible: false })
+  const [DeleteItem, setDeleteItem] = useState({});
 
   useEffect(() => {
     if (props.user.userData) {
@@ -29,10 +22,84 @@ function UserPage(props) {
     }
   }, [props.user]);
 
+  const handleDelete = (product) => {
+    setDeleteItem(product);
+    setDeleteFormValue({ ...DeleteFormValue, visible: true });
+  };
+
+  const handleEdit = (product) => {
+    // Edit Form
+    setCurrentItem(product);
+    setFormValue({ ...FormValue, visible: true });
+  };
+
+  const handleEditOk = (newItem) => {
+    // save
+    let updateItem = {
+      ...CurrentItem,
+      ...newItem
+    }
+
+    Axios.post('/api/product/updateProduct', updateItem)
+      .then((response) => {
+        if (response.data.success) {
+          const variables = { userid: props.user.userData._id };
+          getProducts(variables);  
+        } else {
+          alert("Fail to update product!")
+        }
+      })
+
+    setFormValue({ ...FormValue, visible: false });
+    setCurrentItem({});
+    
+  }
+
+  const handleEditCancel = () => {
+    setFormValue({ ...FormValue, visible: false });
+    setCurrentItem({});
+  }
+
+  const handleDeleteOk = (reason) => {
+    let deleteItem = { ...DeleteItem, ...reason };
+
+    // delete from db & add to history
+    // dispatch(onDeleteItem(deleteItem))
+    //   .then((response) => {
+    //     // do something
+    //   })
+    Axios.post('/api/users/deleteProduct', deleteItem)
+      .then((response) => {
+        const variables = { userid: props.user.userData._id };
+        getProducts(variables);
+      })
+    
+    setDeleteItem({});
+    setDeleteFormValue({ ...DeleteFormValue, visible: false });
+  }
+
+  const handleDeleteCancel = () => {
+    setDeleteItem({});
+    setDeleteFormValue({ ...DeleteFormValue, visible: false });
+  }
+
+  const content = (product) => {
+    return (
+      <div>
+        <div>
+          <a onClick={()=>handleDelete(product)}>下架删除</a>
+        </div>
+        <div>
+          <a onClick={()=>handleEdit(product)}>修改内容</a>
+        </div>
+      </div>
+    )
+  }
+
   const getProducts = (variables) => {
     Axios.post("/api/product/getByUser", variables).then((response) => {
       if (response.data.success) {
-        setProducts([...Products, ...response.data.products]);
+        setProducts([...response.data.products]);
       } else {
         alert("failed to get items");
       }
@@ -49,7 +116,7 @@ function UserPage(props) {
           display: "inline-block",
         }}
       >
-        <Popover content={content} title="Edit">
+        <Popover content={content(product)} title="Edit">
           <Card
             style={{ width: "270px" }}
             hoverable={true}
@@ -104,7 +171,26 @@ function UserPage(props) {
           </Masonry>
         </div>
       )}
+      <div>
+        <ProductEditForm
+          visible={FormValue.visible}
+          handleOk={handleEditOk}
+          handleCancel={handleEditCancel}
+          edit={true}
+          currentItem={CurrentItem}
+          user={props.user}
+        />
+      </div>
+      <div>
+        <ProductDeleteForm
+          visible={DeleteFormValue.visible}
+          handleOk={handleDeleteOk}
+          handleCancel={handleDeleteCancel}
+          user={props.user}
+        />
+      </div>
     </div>
+
   );
 }
 

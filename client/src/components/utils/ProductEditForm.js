@@ -130,12 +130,13 @@ function ProductEditForm(props) {
                     <label>自取地点:</label>&nbsp;
                     <Select
                         style={{ width: 200 }}
-                        placeholder="select a place"
+                        placeholder
                         optionFilterProp="children"
                         onChange={onPlaceChange}
                         filterOption={(input, option) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
+                        value={PlaceValue != -1? PlaceValue:null}
                         disabled={Means}
                     >
                         {placesData.map((place) => <Option value={place.key}>{place.value}</Option>)}

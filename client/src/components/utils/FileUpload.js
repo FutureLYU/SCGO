@@ -11,7 +11,7 @@ function FileUpload(props) {
     useEffect(() => {
         setImages(props.images);
         setHeights(props.heights);
-        if (props.images.length > 0) { setPreview(true) }
+        if (props.images && props.images.length > 0) { setPreview(true) }
     }, [props.images])
 
     const onDrop = (files) => {

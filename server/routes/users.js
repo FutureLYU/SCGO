@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const { auth } = require("../middleware/auth");
 const email = require("../middleware/send.js");
 const async = require("async");
+mongoose.set('useFindAndModify', false);
 
 //=================================
 //             User
@@ -225,81 +226,45 @@ router.get("/userCartInfo", auth, (req, res) => {
   });
 });
 
-// router.post('/successBuy', auth, (req, res) => {
-//     let history = [];
-//     let transactionData = {};
+router.post('/deleteProduct', auth, (req, res) => {
+  const item = req.body;
+  let history = [];
+  const getDateOfDelete = () => {
+    date = new Date();
 
-//     //1.Put brief Payment Information inside User Collection
-//     req.body.cartDetail.forEach((item) => {
-//         history.push({
-//             dateOfPurchase: Date.now(),
-//             name: item.title,
-//             id: item._id,
-//             price: item.price,
-//             quantity: item.quantity,
-//             paymentId: req.body.paymentData.paymentID
-//         })
-//     })
+    let Y = date.getFullYear() + '-';
+    let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+    let D = date.getDate() + ' ';
+    let h = date.getHours() + ':';
+    let m = date.getMinutes() + ':';
+    let s = date.getSeconds(); 
+    return Y+M+D+h+m+s;
+}
+  
+  history.push({
+    dateOfDelete: getDateOfDelete(),
+    title: item.title,
+    id: item._id,
+    price: item.price,
+    reason: item.reason,
+  })
 
-//     //2.Put Payment Information that come from Paypal into Payment Collection
-//     transactionData.user = {
-//         id: req.user._id,
-//         name: req.user.name,
-//         lastname: req.user.lastname,
-//         email: req.user.email
-//     }
-
-//     transactionData.data = req.body.paymentData;
-//     transactionData.product = history
-
-//     User.findOneAndUpdate(
-//         { _id: req.user._id },
-//         { $push: { history: history }, $set: { cart: [] } },
-//         { new: true },
-//         (err, user) => {
-//             if (err) return res.json({ success: false, err });
-
-//             const payment = new Payment(transactionData)
-//             payment.save((err, doc) => {
-//                 if (err) return res.json({ success: false, err });
-
-//                 //3. Increase the amount of number for the sold information
-
-//                 //first We need to know how many product were sold in this transaction for
-//                 // each of products
-
-//                 let products = [];
-//                 doc.product.forEach(item => {
-//                     products.push({ id: item.id, quantity: item.quantity })
-//                 })
-
-//                 // first Item    quantity 2
-//                 // second Item  quantity 3
-
-//                 async.eachSeries(products, (item, callback) => {
-//                     Product.update(
-//                         { _id: item.id },
-//                         {
-//                             $inc: {
-//                                 "sold": item.quantity
-//                             }
-//                         },
-//                         { new: false },
-//                         callback
-//                     )
-//                 }, (err) => {
-//                     if (err) return res.json({ success: false, err })
-//                     res.status(200).json({
-//                         success: true,
-//                         cart: user.cart,
-//                         cartDetail: []
-//                     })
-//                 })
-
-//             })
-//         }
-//     )
-// })
+  User.findOneAndUpdate(
+    { _id: req.user._id },
+    { $push: { history: history } },
+    { new: true },
+    (err, user) => {
+      if (err) return res.json({ success: false, err });
+      Product.findOneAndDelete({ _id: item._id }, (err) => {
+        if (err) return res.json({ success: false, err });
+        return res.status(200).json({
+          success: true,
+          history: user.history
+        })
+      })
+    }
+  )
+})
 
 router.get("/getHistory", auth, (req, res) => {
   User.findOne({ _id: req.user._id }, (err, doc) => {
