@@ -35,7 +35,7 @@ const tagsData = [
 ];
 
 const reasonsData = [
-    { key: 0, value: "已售出" },
+    { key: 0, value: "已出售" },
     { key: 1, value: "物品信息错误" },
     { key: 2, value: "其他原因" }
 ]
