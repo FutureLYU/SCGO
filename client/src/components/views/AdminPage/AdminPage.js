@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Layout, Menu } from "antd";
-function AdminPage() {
+
+function AdminPage(props) {
   const { Content, Sider } = Layout;
-  const { SubMenu } = Menu;
+  useEffect(() => {
+    if (props.user.userData) {
+      if (!props.user.userData.isAdmin) {
+        props.history.push("/403");
+      }
+    }
+  }, [props.user.userData]);
   return (
     <Layout>
       <Sider

@@ -15,12 +15,16 @@ import ChangePasswordPage from "./views/ChangePasswordPage/ChangePasswordPage";
 import UserPage from "./views/UserPage/UserPage";
 import VisitorPage from "./views/VisitorPage/VisitorPage";
 import AdminPage from "./views/AdminPage/AdminPage";
+import Exception403 from "./views/ExceptionPage/Exception403";
+import Exception404 from "./views/ExceptionPage/Exception404";
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <NavBar />
       <div style={{ paddingTop: "75px", minHeight: "calc(100vh - 80px)" }}>
         <Switch>
+          <Route exact path="/403" component={Auth(Exception403, null)} />
+          <Route exact path="/404" component={Auth(Exception404, null)} />
           <Route exact path="/admin" component={Auth(AdminPage, true)} />
           <Route exact path="/" component={Auth(LandingPage, null)} />
           <Route exact path="/login" component={Auth(LoginPage, false)} />

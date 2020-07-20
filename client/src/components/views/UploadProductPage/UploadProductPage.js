@@ -5,7 +5,7 @@ import Axios from "axios";
 import CreateLongPicture from "../../utils/CreatLongPicture/CreateLongPicture";
 import ProductEditForm from "../../utils/ProductEditForm";
 import ContactAddForm from "../../utils/ContactAddForm";
-import { categoryData, tagsData } from "../../utils/Data"
+import { categoryData, tagsData } from "../../utils/Data";
 
 function UploadProductPage(props) {
   const [Items, setItems] = useState([]);
@@ -17,10 +17,15 @@ function UploadProductPage(props) {
   const [ContactForm, setContactForm] = useState({ visible: false });
 
   useEffect(() => {
+    if (props.user.userData) {
+      if (props.user.userData.role === -1) {
+        props.history.push("/403");
+      }
+    }
     Axios.get("/api/users/getUploadProduct").then((response) => {
       setItems(response.data.uploadProduct);
     });
-  }, []);
+  }, [props.user.userData]);
 
   const onAdd = (event) => {
     // set state of Form Value
@@ -33,10 +38,9 @@ function UploadProductPage(props) {
 
   const onAddContact = () => {
     setContactForm({ ...ContactForm, visible: true });
-  }
+  };
 
   const onSubmit = (newItems) => {
-
     // submit all items into database
     Axios.post("/api/product/uploadProduct", newItems).then((response) => {
       if (response.data.success) {
@@ -58,7 +62,7 @@ function UploadProductPage(props) {
     // set edit
     setEdit(true);
     setEditIndex(index);
-    setCurrentItem(Items[index])
+    setCurrentItem(Items[index]);
     setFormValue({ ...FormValue, visible: true });
   };
 
@@ -103,7 +107,7 @@ function UploadProductPage(props) {
     // set all values to default
     setEdit(false);
     setEditIndex(-1);
-    setCurrentItem({})
+    setCurrentItem({});
   };
 
   const addContactOk = (contact) => {
@@ -115,37 +119,37 @@ function UploadProductPage(props) {
         ...item,
         wechat: contact.wechat,
         email: contact.email,
-        contactchoice: contact.contactchoice
-      }
-    })
-    setItems(newItems)
+        contactchoice: contact.contactchoice,
+      };
+    });
+    setItems(newItems);
     // use on submit
     onSubmit(newItems);
-  }
+  };
 
   const addContactCancel = () => {
     setContactForm({ ...ContactForm, visible: false });
-  }
+  };
 
   const getCategoryByKey = (key) => {
-    let categoryname = "None"
+    let categoryname = "None";
     categoryData.map((item) => {
       if (item.key == parseInt(key)) {
         categoryname = item.value;
       }
-    })
-    return categoryname
-  }
+    });
+    return categoryname;
+  };
 
   const getTagByKey = (key) => {
     let tagname = "None";
     tagsData.map((tag) => {
       if (tag.key === parseInt(key)) {
-        tagname = tag.value
+        tagname = tag.value;
       }
-    })
-    return tagname
-  }
+    });
+    return tagname;
+  };
 
   const renderItemCards = Items.map((item, index) => {
     return (
@@ -159,8 +163,18 @@ function UploadProductPage(props) {
               <p>Title: {item.title}</p>
               <p>Description: {item.description}</p>
               <p>Price: {item.price}</p>
-              <p>交易方式: <Tag style={{ width:"100px", textAlign:"center" }}>{getTagByKey(item.tag)}</Tag></p>
-              <p>物品种类: <Tag style={{ width:"100px", textAlign:"center" }}>{getCategoryByKey(item.category)}</Tag></p>
+              <p>
+                交易方式:{" "}
+                <Tag style={{ width: "100px", textAlign: "center" }}>
+                  {getTagByKey(item.tag)}
+                </Tag>
+              </p>
+              <p>
+                物品种类:{" "}
+                <Tag style={{ width: "100px", textAlign: "center" }}>
+                  {getCategoryByKey(item.category)}
+                </Tag>
+              </p>
             </Col>
             <Col lg={4} xs={24}>
               <Button
@@ -198,10 +212,10 @@ function UploadProductPage(props) {
           <h2>No post yet...</h2>
         </div>
       ) : (
-          <div style={{ width: "70%", margin: "3rem auto" }}>
-            <Row gutter={[16, 16]}>{renderItemCards}</Row>
-          </div>
-        )}
+        <div style={{ width: "70%", margin: "3rem auto" }}>
+          <Row gutter={[16, 16]}>{renderItemCards}</Row>
+        </div>
+      )}
       <br />
       <br />
 
@@ -211,17 +225,20 @@ function UploadProductPage(props) {
             Add
           </Button>
 
-          <Button style={{ width: "100px", margin: "25px" }} onClick={onAddContact}>
+          <Button
+            style={{ width: "100px", margin: "25px" }}
+            onClick={onAddContact}
+          >
             Submit
           </Button>
         </div>
       ) : (
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <Button style={{ width: "100px", margin: "auto" }} onClick={onAdd}>
-              Add
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button style={{ width: "100px", margin: "auto" }} onClick={onAdd}>
+            Add
           </Button>
-          </div>
-        )}
+        </div>
+      )}
 
       <div>
         <ProductEditForm

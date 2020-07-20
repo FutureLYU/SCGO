@@ -56,6 +56,12 @@ $ npm run dev
 ### 07-19 update (hanxi)
 
 - 添加了 AdminPage
+- 添加了 admin 权限判定 User.role || User.isAdmin
+- 判定 User.role === -1 为 blocked
+- 添加了 403 页面来响应无权限跳转
+- 添加了 404 页面来响应无页面跳转
+- 修改了 DetailPage 逻辑 来处理无页面跳转
+- 设置了 uploadPage 的使用权限 isAdmin === true
 
 ### 07-18 update (Harold)
 

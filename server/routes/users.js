@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const { auth } = require("../middleware/auth");
 const email = require("../middleware/send.js");
 const async = require("async");
-mongoose.set('useFindAndModify', false);
+mongoose.set("useFindAndModify", false);
 
 //=================================
 //             User
@@ -16,7 +16,7 @@ mongoose.set('useFindAndModify', false);
 router.get("/auth", auth, (req, res) => {
   res.status(200).json({
     _id: req.user._id,
-    isAdmin: req.user.role === 0 ? false : true,
+    isAdmin: req.user.role === 1 ? true : false,
     isAuth: true,
     email: req.user.email,
     username: req.user.name,
@@ -24,6 +24,7 @@ router.get("/auth", auth, (req, res) => {
     image: req.user.image,
     cart: req.user.cart,
     history: req.user.history,
+    state: req.user.state,
   });
 });
 
@@ -226,28 +227,31 @@ router.get("/userCartInfo", auth, (req, res) => {
   });
 });
 
-router.post('/deleteProduct', auth, (req, res) => {
+router.post("/deleteProduct", auth, (req, res) => {
   const item = req.body;
   let history = [];
   const getDateOfDelete = () => {
     date = new Date();
 
-    let Y = date.getFullYear() + '-';
-    let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-    let D = date.getDate() + ' ';
-    let h = date.getHours() + ':';
-    let m = date.getMinutes() + ':';
-    let s = date.getSeconds(); 
-    return Y+M+D+h+m+s;
-}
-  
+    let Y = date.getFullYear() + "-";
+    let M =
+      (date.getMonth() + 1 < 10
+        ? "0" + (date.getMonth() + 1)
+        : date.getMonth() + 1) + "-";
+    let D = date.getDate() + " ";
+    let h = date.getHours() + ":";
+    let m = date.getMinutes() + ":";
+    let s = date.getSeconds();
+    return Y + M + D + h + m + s;
+  };
+
   history.push({
     dateOfDelete: getDateOfDelete(),
     title: item.title,
     id: item._id,
     price: item.price,
     reason: item.reason,
-  })
+  });
 
   User.findOneAndUpdate(
     { _id: req.user._id },
@@ -259,12 +263,12 @@ router.post('/deleteProduct', auth, (req, res) => {
         if (err) return res.json({ success: false, err });
         return res.status(200).json({
           success: true,
-          history: user.history
-        })
-      })
+          history: user.history,
+        });
+      });
     }
-  )
-})
+  );
+});
 
 router.get("/getHistory", auth, (req, res) => {
   User.findOne({ _id: req.user._id }, (err, doc) => {
@@ -317,7 +321,6 @@ router.post("/updateUploadProduct", auth, (req, res) => {
       });
     }
   );
-  
 });
 
 module.exports = router;
