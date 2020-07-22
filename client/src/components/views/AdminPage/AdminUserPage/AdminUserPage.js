@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Layout, Menu } from "antd";
 
-function AdminPage(props) {
+function AdminUserPage(props) {
   const { Content, Sider } = Layout;
   useEffect(() => {
     if (props.user.userData) {
@@ -57,4 +57,4 @@ function AdminPage(props) {
   );
 }
 
-export default AdminPage;
+export default AdminUserPage;

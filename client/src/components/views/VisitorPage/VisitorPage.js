@@ -57,7 +57,7 @@ function UserPage(props) {
     <div style={{ width: "75%", margin: "3rem auto" }}>
       <div style={{ textAlign: "center" }}>
         <h1>
-          我的物品 <Icon type="account-book" />
+          卖家的物品 <Icon type="account-book" />
         </h1>
       </div>
 

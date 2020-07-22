@@ -17,6 +17,8 @@ import VisitorPage from "./views/VisitorPage/VisitorPage";
 import AdminPage from "./views/AdminPage/AdminPage";
 import Exception403 from "./views/ExceptionPage/Exception403";
 import Exception404 from "./views/ExceptionPage/Exception404";
+import AdminProductPage from "./views/AdminPage/AdminProductPage/AdminProductPage";
+import AdminUserPage from "./views/AdminPage/AdminUserPage/AdminUserPage";
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -26,6 +28,16 @@ function App() {
           <Route exact path="/403" component={Auth(Exception403, null)} />
           <Route exact path="/404" component={Auth(Exception404, null)} />
           <Route exact path="/admin" component={Auth(AdminPage, true)} />
+          <Route
+            exact
+            path="/admin/product"
+            component={Auth(AdminProductPage, true)}
+          />
+          <Route
+            exact
+            path="/admin/user"
+            component={Auth(AdminUserPage, true)}
+          />
           <Route exact path="/" component={Auth(LandingPage, null)} />
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />

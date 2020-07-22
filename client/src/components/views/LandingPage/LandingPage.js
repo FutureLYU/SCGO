@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Axios from "axios";
-import { Icon, Col, Card, Row, Tag, Button } from "antd";
+import { Icon, Col, Card, Row, Tag } from "antd";
 import CheckBox from "./Sections/CheckBox";
 import { category, tags } from "./Sections/Datas";
 import SearchFeature from "./Sections/SearchFeature";
@@ -14,7 +14,7 @@ function LandingPage(props) {
   const [Skip, setSkip] = useState(0);
   const [Limit, setLimit] = useState(8);
   const [SearchTerms, setSearchTerms] = useState("");
-  const [Search, setSearch] = useState(false)
+  const [Search, setSearch] = useState(false);
   const [HasMore, setHasMore] = useState(true);
   const [Filters, setFilters] = useState({
     category: [],
@@ -160,7 +160,10 @@ function LandingPage(props) {
             alignItems: "center",
           }}
         >
-          <h2>暂未相关物品，您可以重新选择筛选/搜索内容或点击<a onClick={()=>props.history.go(0)}>Home</a>返回</h2>
+          <h2>
+            暂未相关物品，您可以重新选择筛选/搜索内容或点击
+            <a onClick={() => props.history.go(0)}>Home</a>返回
+          </h2>
         </div>
       ) : (
         <div style={{ width: "102%", overflowX: "hidden", overflowY: "auto" }}>
