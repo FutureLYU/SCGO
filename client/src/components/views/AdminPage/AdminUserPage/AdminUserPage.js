@@ -20,6 +20,15 @@ function UserControl(props) {
         }
     }, [props.user.userData]);
 
+
+    const handleProductClick = () => {
+        props.history.push("/admin/product");
+    };
+
+    const handleUserClick = () => {
+        props.history.push("/admin/user");
+    };
+
     const getUserInfo = (rule) => {
         Axios.post('/api/users/getUserByRule', rule)
             .then((response) => {
@@ -94,8 +103,12 @@ function UserControl(props) {
                     defaultOpenKeys={["sub1"]}
                     style={{ height: "100%", borderRight: 0 }}
                 >
-                    <Menu.Item key="1">物品审核</Menu.Item>
-                    <Menu.Item key="2"><a href="/admin/user">用户审核</a></Menu.Item>
+                    <Menu.Item onClick={handleProductClick} key="1">
+                        物品审核
+                    </Menu.Item>
+                    <Menu.Item onClick={handleUserClick} key="2">
+                        用户审核
+                    </Menu.Item>
                 </Menu>
             </Sider>
             <Layout>
