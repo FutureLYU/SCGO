@@ -29,7 +29,7 @@ function AdminPage(props) {
           style={{ height: "100%", borderRight: 0 }}
         >
           <Menu.Item key="1">物品审核</Menu.Item>
-          <Menu.Item key="2">用户审核</Menu.Item>
+          <Menu.Item key="2"><a href="/admin/user">用户审核</a></Menu.Item>
         </Menu>
       </Sider>
       <Content

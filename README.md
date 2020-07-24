@@ -53,6 +53,11 @@ $ npm run dev
 
 # Update
 
+### 07-21 update (Harold)
+
+- 添加用户管理功能 UserControl.js 包含search user id, block, unblock功能
+- 添加contact page
+
 ### 07-19 update (hanxi)
 
 - 添加了 AdminPage

@@ -323,4 +323,51 @@ router.post("/updateUploadProduct", auth, (req, res) => {
   );
 });
 
+// get users by rule
+router.post("/getUserByRule", auth, (req, res) => {
+  let order = req.body.order ? req.body.order : "desc";
+  let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
+  if ( req.body.searchTerm && req.body.searchTerm.length !== 24 ) {
+    return res.json(200).json({ success: true, users: []})
+  }
+  let term = req.body.searchTerm? mongoose.Types.ObjectId(req.body.searchTerm):undefined;
+  
+  if (term) {
+    User.find({ "_id": term })
+      .sort([[sortBy, order]])
+      .exec((err, users) => {
+        if (err) return res.status(400).json({ success: false, err });
+        res
+          .status(200)
+          .json({ success: true, users, postSize: users.length });
+      });
+  } else {
+    User.find()
+      .sort([[sortBy, order]])
+      .exec((err, users) => {
+        if (err) return res.status(400).json({ success: false, err });
+        res
+          .status(200)
+          .json({ success: true, users });
+      });
+  }
+})
+
+// update user state
+router.post("/updateUserState", auth, (req, res) => {
+  const newState = req.body.role;
+  const userid = mongoose.Types.ObjectId(req.body.userid);
+  
+  User.findOneAndUpdate(
+    { _id: userid },
+    { role: newState },
+    (err, doc) => {
+      if (err) return res.json({ success: false, err });
+      return res.status(200).send({
+        success: true,
+      });
+    }
+  );
+});
+
 module.exports = router;
