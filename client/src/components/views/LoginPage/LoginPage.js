@@ -180,5 +180,4 @@ function LoginPage(props) {
     </Formik>
   );
 }
-
 export default withRouter(LoginPage);
