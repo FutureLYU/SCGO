@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "react boiler plate",
   "main": "index.js",
-  "engine": {
-    "node": "10.16.0",
-    "npm": "6.9.0"
+  "engines": {
+    "node": "11.14.0",
+    "npm": "6.14.5"
   },
   "scripts": {
     "heroku-postbuild": "mkdir uploads && cd client && npm install && npm run build",
