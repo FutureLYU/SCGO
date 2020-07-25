@@ -8,8 +8,8 @@
     "npm": "6.9.0"
   },
   "scripts": {
-    "start": "concurrently \"npm run backend\" \"npm run start --prefix client\"",
-    "originstart": "node server/index.js",
+    "heroku-postbuild": "mkdir uploads && cd client && npm install && npm run build",
+    "start": "node server/index.js",
     "backend": "nodemon server/index.js",
     "frontend": "npm run start --prefix client",
     "dev": "concurrently \"npm run backend\" \"npm run start --prefix client\""
