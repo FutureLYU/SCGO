@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Menu, Table, Tag, Button, Form, Input } from 'antd';
+import { Layout, Menu, Table, Tag, Button, Input, Row, Col } from 'antd';
 import Axios from 'axios';
 
 const { Content, Sider } = Layout;
@@ -126,31 +126,35 @@ function UserControl(props) {
                         style={{ 
                             background: 'white', 
                             marginBottom: '20px',
-                            display: "flex",
-                            margin: "1rem auto"
+                            margin: "1rem auto",
+                            width: "100%"
                         }}
                     >
-                        <label>User ID查询: </label>
-                        <div
-                            style={{
-                                width: "400px",
-                            }}
-                        >
-                            <Search
-                                value={SearchTerm}
-                                onChange={onChangeSearch}
-                                onSearch={onSubmit}
-                                enterButton="Search"
-                                placeholder="24-character user id"
-                            />
-                        </div>
+                        <br />
+                        <Row gutter={4}>
+                            <Col lg={2} xs={12}>
+                                <h3 style={{ margin: "auto"}}>&nbsp;&nbsp;&nbsp;&nbsp;USER ID查询:</h3>
+                            </Col>
+                            <Col lg={6} xs={24}>
+                                <div style={{ maxWidth: "400px" }} >
+                                    <Search
+                                        value={SearchTerm}
+                                        onChange={onChangeSearch}
+                                        onSearch={onSubmit}
+                                        enterButton="Search"
+                                        placeholder="24-character user id"
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
+                        <br />
                     </div>
 
                     {/* Table */}
                     <div style={{ background: 'white', marginBottom: '20px'}}>
-                        <p>查询表格</p>
+                        <h3 style={{ padding: '1rem 1rem 1rem 1rem' }}>查询表格</h3>
                         <Table 
-                            style={{ background: 'white'}}
+                            style={{ background: 'white' }}
                             dataSource={UserData.length > 0? UserData: null}
                         >
                             <Column bordered={false} title="User ID" dataIndex="userid" key="userid" />
@@ -174,15 +178,15 @@ function UserControl(props) {
                                     <div>
                                         <Button 
                                             style={{width: '80px'}}
-                                            disabled={record.userstate != 0 ? true : false} 
+                                            disabled={record.userstate !== 0 ? true : false} 
                                             onClick={()=>blockUser(record.userid)}
                                         >
                                             Block
                                         </Button>&nbsp;
                                         <Button 
                                             style={{width: '80px'}}
-                                            disabled={record.userstate != -1 ? true : false} 
-                                            onClick={()=>()=>unblockUser(record.userid)}
+                                            disabled={record.userstate !== -1 ? true : false} 
+                                            onClick={()=>unblockUser(record.userid)}
                                         >
                                             Unblock
                                         </Button>

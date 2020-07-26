@@ -53,6 +53,11 @@ $ npm run dev
 
 # Update
 
+### 07-23 update (Harold)
+
+- 添加商品管理中下架功能
+- 调整CSS样式
+
 ### 07-21 update (Harold)
 
 - 添加用户管理功能 UserControl.js 包含search user id, block, unblock功能

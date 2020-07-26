@@ -31,7 +31,7 @@ function ContactUsPage() {
                     avatar={
                         <Avatar size={100} src="http://localhost:5000/pic/default-thumb.png" />
                     }
-                    title="Harold"
+                    title="Hanxi"
                     description="Email: haimeiyoujian@scgo.org"
                 />
             </Card>
@@ -40,10 +40,11 @@ function ContactUsPage() {
                     avatar={
                         <Avatar size={100} src="http://localhost:5000/pic/default-thumb.png" />
                     }
-                    title="Hanxi"
+                    title="Harold"
                     description="Email: haimeiyoujian@scgo.org"
                 />
             </Card>
+            
         </div>
     )
 }

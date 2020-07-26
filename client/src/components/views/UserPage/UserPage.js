@@ -4,7 +4,6 @@ import Masonry from "react-masonry-component";
 import { Icon, Card, Popover } from "antd";
 import ProductEditForm from '../../utils/ProductEditForm';
 import ProductDeleteForm from '../../utils/ProductDeleteForm';
-import { useDispatch } from 'react-redux';
 
 function UserPage(props) {
   const [Products, setProducts] = useState([]);
@@ -61,11 +60,6 @@ function UserPage(props) {
   const handleDeleteOk = (reason) => {
     let deleteItem = { ...DeleteItem, ...reason };
 
-    // delete from db & add to history
-    // dispatch(onDeleteItem(deleteItem))
-    //   .then((response) => {
-    //     // do something
-    //   })
     Axios.post('/api/users/deleteProduct', deleteItem)
       .then((response) => {
         const variables = { userid: props.user.userData._id };
