@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Descriptions } from 'antd';
+import { Descriptions } from 'antd';
 import { tagsData, categoryData } from '../../../utils/Data'
 
 function ProductInfo(props) {
@@ -16,6 +16,7 @@ function ProductInfo(props) {
             if (tag.key === key) {
                 tagname = tag.value
             }
+            return
         })
         return tagname
     }
@@ -24,8 +25,9 @@ function ProductInfo(props) {
         let categoryname = "None";
         categoryData.map((category) => {
             if (category.key === key) {
-                categoryname= category.value
+                categoryname = category.value
             }
+            return
         })
         return categoryname
     }

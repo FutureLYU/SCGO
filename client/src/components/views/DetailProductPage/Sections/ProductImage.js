@@ -13,6 +13,7 @@ function ProductImage(props) {
                     original: `http://localhost:5000/${item}`,
                     thumbnail: `http://localhost:5000/${item}`
                 })
+                return
             })
             setImages(images)
         }

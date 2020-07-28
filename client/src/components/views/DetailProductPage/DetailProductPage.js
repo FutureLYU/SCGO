@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
-import { Row, Col, Button, Modal, Input } from "antd";
+import { Row, Col, Button, Modal } from "antd";
 import ProductImage from "./Sections/ProductImage";
 import ProductInfo from "./Sections/ProductInfo";
-import { useDispatch } from "react-redux";
 
 function DetailProductPage(props) {
-  const dispatch = useDispatch();
   const productId = props.match.params.productId;
   const [Product, setProduct] = useState({});
   const [ContactForm, setContactForm] = useState({ visible: false });

@@ -8,6 +8,7 @@ function AdminPage(props) {
       if (!props.user.userData.isAdmin) {
         props.history.push("/403");
       }
+      handleProductClick();
     }
   }, [props.user.userData]);
 

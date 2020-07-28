@@ -89,7 +89,8 @@ export default class extends Component {
   }
   render() {
     const codeBox = [];
-    this.state.dom = [];
+    this.setState({ ...this.state, dom: [] });
+    // this.state.dom = [];
     const inputType = this.props.type || "input";
     for (let i = 0; i < this.props.length; i++) {
       codeBox.push(
@@ -103,6 +104,7 @@ export default class extends Component {
             spellCheck="false"
             value={this.state.code[i]}
             ref={(dom) => (this.state.dom[i] = dom)}
+            // ref={(dom) => (this.state.dom[i] = dom)}
             onFocus={(e) => textSelect(e.target)}
             onClick={(e) => textSelect(e.target)}
             onChange={(e) => this.onChange(e, i)}

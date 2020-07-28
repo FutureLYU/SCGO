@@ -136,7 +136,7 @@ function ProductEditForm(props) {
                         filterOption={(input, option) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
-                        value={PlaceValue != -1? PlaceValue:null}
+                        value={PlaceValue !== -1? PlaceValue:null}
                         disabled={Means}
                     >
                         {placesData.map((place) => <Option value={place.key}>{place.value}</Option>)}

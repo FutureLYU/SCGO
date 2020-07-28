@@ -32,7 +32,12 @@ app.use("/api/product", require("./routes/product"));
 
 //use this to show the image you have in node js server to client (react js)
 //https://stackoverflow.com/questions/48914987/send-image-path-from-node-js-express-server-to-react-client
+<<<<<<< HEAD
 app.use("/uploads", express.static("uploads"));
+=======
+app.use('/uploads', express.static('uploads'));
+app.use('/pic', express.static('pic'));
+>>>>>>> 576c8057535641c009ded1245a20ee802f93124f
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === "production") {

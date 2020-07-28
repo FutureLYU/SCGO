@@ -14,7 +14,6 @@ function LandingPage(props) {
   const [Skip, setSkip] = useState(0);
   const [Limit, setLimit] = useState(8);
   const [SearchTerms, setSearchTerms] = useState("");
-  const [Search, setSearch] = useState(false);
   const [HasMore, setHasMore] = useState(true);
   const [Filters, setFilters] = useState({
     category: [],

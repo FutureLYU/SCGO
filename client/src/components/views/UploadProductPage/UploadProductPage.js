@@ -134,9 +134,10 @@ function UploadProductPage(props) {
   const getCategoryByKey = (key) => {
     let categoryname = "None";
     categoryData.map((item) => {
-      if (item.key == parseInt(key)) {
+      if (item.key === parseInt(key)) {
         categoryname = item.value;
       }
+      return
     });
     return categoryname;
   };
@@ -147,6 +148,7 @@ function UploadProductPage(props) {
       if (tag.key === parseInt(key)) {
         tagname = tag.value;
       }
+      return
     });
     return tagname;
   };
