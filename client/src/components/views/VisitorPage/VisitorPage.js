@@ -1,28 +1,50 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Axios from "axios";
 import Masonry from "react-masonry-component";
 import { Icon, Card } from "antd";
 
 function UserPage(props) {
   const [Products, setProducts] = useState([]);
+  const [CardSize, setCardSize] = useState({ width: 0 })
   const userid = props.match.params.userid;
+
+  const onResize = useCallback(()=>{
+    let boxwidth = document.documentElement.clientWidth * 0.75;
+    let cardnum = parseInt(boxwidth / 300)+1;
+    let cardwidth = parseInt((boxwidth-15*(cardnum-1))/cardnum);
+    setCardSize({
+      width: cardwidth,
+    })
+  },[])
+
+  useEffect(() => {
+    let boxwidth = document.documentElement.clientWidth * 0.75;
+    let cardnum = parseInt(boxwidth / 300)+1;
+    let cardwidth = parseInt((boxwidth-15*(cardnum-1))/cardnum);
+    setCardSize({
+      width: cardwidth,
+    })
+  }, [])
+
+  useEffect(()=>{
+    window.addEventListener('resize', onResize);
+    return (()=>{
+      window.removeEventListener('resize', onResize) 
+    })
+  },[])
 
   useEffect(() => {
     if (userid) {
       const variables = { userid: userid };
-      getProducts(variables);
+      Axios.post("/api/product/getByUser", variables).then((response) => {
+        if (response.data.success) {
+          setProducts([...response.data.products]);
+        } else {
+          alert("failed to get items");
+        }
+      });
     }
   }, [userid]);
-
-  const getProducts = (variables) => {
-    Axios.post("/api/product/getByUser", variables).then((response) => {
-      if (response.data.success) {
-        setProducts([...Products, ...response.data.products]);
-      } else {
-        alert("failed to get items");
-      }
-    });
-  };
 
   const renderCards = Products.map((product, index) => {
     return (
@@ -32,16 +54,17 @@ function UserPage(props) {
           marginRight: "15px",
           marginBottom: "10px",
           display: "inline-block",
+          width: CardSize.width + "px"
         }}
       >
         <Card
-          style={{ width: "270px" }}
           hoverable={true}
           cover={
             <a href={`/product/${product._id}`}>
               <img
-                style={{ width: "270px", height: `${752 / 270}%` }}
+                style={{ width: CardSize.width+"px", height: `${parseInt(CardSize.width/752*100)}%` }}
                 src={`http://localhost:5000/${product.images[0]}`}
+                alt=""
               />
             </a>
           }
@@ -73,7 +96,7 @@ function UserPage(props) {
           <h2>No post yet...</h2>
         </div>
       ) : (
-        <div>
+        <div style={{ width: 'calc(100% + 15px)' }} >
           <Masonry
             className={"my-gallery-class"} // default ''
             options={{ transitionDuration: 2 }} // default {}

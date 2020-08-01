@@ -28,7 +28,7 @@ function ProductEditForm(props) {
             setHeights(props.currentItem.heights);
         }
         
-    }, [props.visible])
+    }, [props])
 
     // Product Form Update
     const onTitleChange = (event) => {
@@ -123,7 +123,7 @@ function ProductEditForm(props) {
 
                     <label>交易方式:</label>&nbsp;
                     <Radio.Group onChange={onMeansChange} value={Means}>
-                        {meansData.map((mean) => <Radio value={mean.key}>{mean.value}</Radio>)}
+                        {meansData.map((mean) => <Radio key={mean.key} value={mean.key}>{mean.value}</Radio>)}
                     </Radio.Group>
                     <br /><br />
 
@@ -139,7 +139,7 @@ function ProductEditForm(props) {
                         value={PlaceValue !== -1? PlaceValue:null}
                         disabled={Means}
                     >
-                        {placesData.map((place) => <Option value={place.key}>{place.value}</Option>)}
+                        {placesData.map((place) => <Option key={place.key} value={place.key}>{place.value}</Option>)}
                     </Select>
                     <br /><br />
 

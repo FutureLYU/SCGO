@@ -19,7 +19,7 @@ function DetailProductPage(props) {
         }
       }
     );
-  }, []);
+  }, [props, productId]);
 
   const showContact = () => {
     setContactForm({ ...ContactForm, visible: true });

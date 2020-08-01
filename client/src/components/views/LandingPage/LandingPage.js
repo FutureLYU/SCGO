@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Axios from "axios";
 import { Icon, Col, Card, Row, Tag } from "antd";
 import CheckBox from "./Sections/CheckBox";
@@ -10,11 +10,12 @@ import InfiniteScroll from "react-infinite-scroll-component";
 const { Meta } = Card;
 
 function LandingPage(props) {
+  const Limit = 8; // setLimit
   const [Products, setProducts] = useState([]);
   const [Skip, setSkip] = useState(0);
-  const [Limit, setLimit] = useState(8);
   const [SearchTerms, setSearchTerms] = useState("");
   const [HasMore, setHasMore] = useState(true);
+  const [CardSize, setCardSize] = useState({ width: 0 })
   const [Filters, setFilters] = useState({
     category: [],
     tag: [],
@@ -26,16 +27,45 @@ function LandingPage(props) {
       if (tag._id === key) {
         tagname = tag.name;
       }
+      return null;
     });
     return tagname;
   };
 
+  const onResize = useCallback(()=>{
+    let boxwidth = document.documentElement.clientWidth * 0.75;
+    let cardnum = parseInt(boxwidth / 300)+1;
+    let cardwidth = parseInt((boxwidth-15*(cardnum-1))/cardnum);
+    setCardSize({
+      width: cardwidth,
+    })
+  },[])
+
   useEffect(() => {
-    const variables = {
-      skip: Skip,
-      limit: Limit,
-    };
-    getProducts(variables);
+    let boxwidth = document.documentElement.clientWidth * 0.75;
+    let cardnum = parseInt(boxwidth / 300)+1;
+    let cardwidth = parseInt((boxwidth-15*(cardnum-1))/cardnum);
+    setCardSize({
+      width: cardwidth,
+    })
+  }, [])
+
+  useEffect(()=>{
+    window.addEventListener('resize', onResize);
+    return (()=>{
+      window.removeEventListener('resize', onResize) 
+    })
+  },[])
+
+  useEffect(() => {
+    Axios.post("/api/product/getProducts", { skip: 0, limit: Limit }).then((response) => {
+      if (response.data.success) {
+        setHasMore(response.data.postSize < Limit ? false : true);
+        setProducts(response.data.products);
+      } else {
+        alert("Failed to fectch product datas");
+      }
+    });
   }, []);
 
   const getProducts = (variables) => {
@@ -161,11 +191,11 @@ function LandingPage(props) {
         >
           <h2>
             暂未相关物品，您可以重新选择筛选/搜索内容或点击
-            <a onClick={() => props.history.go(0)}>Home</a>返回
+            <a href='/'>Home</a>返回
           </h2>
         </div>
       ) : (
-        <div style={{ width: "102%", overflowX: "hidden", overflowY: "auto" }}>
+        <div style={{ width: 'calc(100% + 15px)', overflowX: "hidden", overflowY: "auto" }}>
           <InfiniteScroll
             dataLength={Products.length} //This is important field to render the next data
             next={() => onLoadMore()}
@@ -189,16 +219,17 @@ function LandingPage(props) {
                     marginRight: "15px",
                     marginBottom: "10px",
                     display: "inline-block",
+                    width: CardSize.width
                   }}
                 >
                   <Card
-                    style={{ width: "270px" }}
                     hoverable={true}
                     cover={
                       <a href={`/product/${product._id}`}>
                         <img
-                          style={{ width: "270px", height: `${752 / 270}%` }}
+                          style={{ width: CardSize.width+"px", height: `${parseInt(CardSize.width/752*100)}%` }}
                           src={`http://localhost:5000/${product.images[0]}`}
+                          alt=""
                         />
                       </a>
                     }

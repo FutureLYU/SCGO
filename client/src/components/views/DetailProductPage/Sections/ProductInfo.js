@@ -14,22 +14,22 @@ function ProductInfo(props) {
         let tagname = "None";
         tagsData.map((tag) => {
             if (tag.key === key) {
-                tagname = tag.value
+                tagname = tag.value;
             }
-            return
+            return null;
         })
-        return tagname
+        return tagname;
     }
 
     const getCategoryByKey = (key) => {
         let categoryname = "None";
         categoryData.map((category) => {
             if (category.key === key) {
-                categoryname = category.value
+                categoryname = category.value;
             }
-            return
+            return null;
         })
-        return categoryname
+        return categoryname;
     }
 
     return (

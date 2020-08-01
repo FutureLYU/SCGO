@@ -8,9 +8,9 @@ function AdminPage(props) {
       if (!props.user.userData.isAdmin) {
         props.history.push("/403");
       }
-      handleProductClick();
+      props.history.push("/admin/product");
     }
-  }, [props.user.userData]);
+  }, [props]);
 
   const handleProductClick = () => {
     props.history.push("/admin/product");

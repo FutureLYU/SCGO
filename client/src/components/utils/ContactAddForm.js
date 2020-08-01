@@ -15,7 +15,7 @@ function ContactAddForm(props) {
             setEmail(props.contact.email);
             setContactChoice(props.contact.contactchoice);
         }    
-    }, [props.visible])
+    }, [props])
 
     // Product Form Update
     const onWeChatChange = (event) => { setWeChat(event.currentTarget.value) };

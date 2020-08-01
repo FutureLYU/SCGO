@@ -3,10 +3,10 @@ import { Modal } from "antd";
 
 function CreateLongPicture(props) {
   const canvasRef = useRef();
-  var position = 0;
 
   useEffect(() => {
     if (props.visible) {
+      var position = 0;
       function drawCanvas(image, text, height) {
         var mycv = canvasRef.current;
         var myctx = mycv.getContext("2d");
@@ -14,7 +14,7 @@ function CreateLongPicture(props) {
         myctx.font = "40px Arial";
         myctx.fillStyle = "red";
         myctx.textAlign = "center";
-        myctx.fillText(text, 351, position + 100, 700);
+        myctx.fillText(text, 351, position + 30, 700);
         position = position + height;
       }
 
@@ -34,9 +34,10 @@ function CreateLongPicture(props) {
             alert("failed to load picture");
           };
         }
+        return null;
       });
     }
-  }, [props.visible, canvasRef.current]);
+  }, [props]);
 
   const handleCancel = () => {
     props.handleCancel();

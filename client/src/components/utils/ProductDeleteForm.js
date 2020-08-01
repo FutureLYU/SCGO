@@ -55,7 +55,7 @@ function ProductDeleteForm(props) {
                         onChange={onReasonChange}
                         value={ReasonValue}
                     >
-                        {reasonsData.map((reason) => <Option value={reason.value}>{reason.value}</Option>)}
+                        {reasonsData.map((reason) => <Option key={reason.key} value={reason.value}>{reason.value}</Option>)}
                     </Select>
                     }
                     <br /><br />

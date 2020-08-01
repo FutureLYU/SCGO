@@ -12,7 +12,7 @@ function FileUpload(props) {
         setImages(props.images);
         setHeights(props.heights);
         if (props.images && props.images.length > 0) { setPreview(true) }
-    }, [props.images])
+    }, [props])
 
     const onDrop = (files) => {
         let formData = new FormData();

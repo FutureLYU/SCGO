@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Menu, Icon, Card, Popover } from "antd";
+import { Layout, Menu, Icon, Card, Popover, Button } from "antd";
 import Axios from "axios";
 import Masonry from "react-masonry-component";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ProductDeleteForm from '../../../utils/ProductDeleteForm';
 
+const { Content, Sider } = Layout;
+
 function AdminProductPage(props) {
-  const { Content, Sider } = Layout;
+  const Limit = 8; // setLimit
   const [Products, setProducts] = useState([]);
   const [Skip, setSkip] = useState(0);
-  const [Limit, setLimit] = useState(8);
   const [HasMore, setHasMore] = useState(true);
   const [DeleteFormValue, setDeleteFormValue] = useState({ visible: false })
   const [DeleteItem, setDeleteItem] = useState({});
@@ -32,14 +33,17 @@ function AdminProductPage(props) {
         props.history.push("/403");
       }
     }
-  }, [props.user.userData]);
+  }, [props]);
 
   useEffect(() => {
-    const variables = {
-      skip: Skip,
-      limit: Limit,
-    };
-    getProducts(variables);
+    Axios.post("/api/product/getProducts", { skip: 0, limit: Limit }).then((response) => {
+      if (response.data.success) {
+        setHasMore(response.data.postSize < Limit ? false : true);
+        setProducts(response.data.products);
+      } else {
+        alert("Failed to fectch product datas");
+      }
+    });
   }, []);
 
   const getProducts = (variables) => {
@@ -100,7 +104,7 @@ function AdminProductPage(props) {
         <Popover
           content={
             <div>
-              <a onClick={()=>handleDelete(product)}>下架删除</a>
+              <Button type="link" onClick={()=>handleDelete(product)}>下架删除</Button>
             </div>
           }
         >
@@ -112,6 +116,7 @@ function AdminProductPage(props) {
                 <img
                   style={{ width: "270px", height: `${752 / 270}%` }}
                   src={`http://localhost:5000/${product.images[0]}`}
+                  alt=""
                 />
               </a>
             }

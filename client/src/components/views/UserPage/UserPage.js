@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Axios from "axios";
 import Masonry from "react-masonry-component";
-import { Icon, Card, Popover } from "antd";
+import { Icon, Card, Popover, Button } from "antd";
 import ProductEditForm from '../../utils/ProductEditForm';
 import ProductDeleteForm from '../../utils/ProductDeleteForm';
 
@@ -11,6 +11,32 @@ function UserPage(props) {
   const [CurrentItem, setCurrentItem] = useState({})
   const [DeleteFormValue, setDeleteFormValue] = useState({ visible: false })
   const [DeleteItem, setDeleteItem] = useState({});
+  const [CardSize, setCardSize] = useState({ width: 0 })
+
+  const onResize = useCallback(()=>{
+    let boxwidth = document.documentElement.clientWidth * 0.75;
+    let cardnum = parseInt(boxwidth / 300)+1;
+    let cardwidth = parseInt((boxwidth-15*(cardnum-1))/cardnum);
+    setCardSize({
+      width: cardwidth,
+    })
+  },[])
+
+  useEffect(() => {
+    let boxwidth = document.documentElement.clientWidth * 0.75;
+    let cardnum = parseInt(boxwidth / 300)+1;
+    let cardwidth = parseInt((boxwidth-15*(cardnum-1))/cardnum);
+    setCardSize({
+      width: cardwidth,
+    })
+  }, [])
+
+  useEffect(()=>{
+    window.addEventListener('resize', onResize);
+    return (()=>{
+      window.removeEventListener('resize', onResize) 
+    })
+  },[])
 
   useEffect(() => {
     if (props.user.userData) {
@@ -79,10 +105,10 @@ function UserPage(props) {
     return (
       <div>
         <div>
-          <a onClick={()=>handleDelete(product)}>下架删除</a>
+          <Button type="link" onClick={()=>handleDelete(product)}>下架删除</Button>
         </div>
         <div>
-          <a onClick={()=>handleEdit(product)}>修改内容</a>
+          <Button type="link" onClick={()=>handleEdit(product)}>修改内容</Button>
         </div>
       </div>
     )
@@ -102,21 +128,23 @@ function UserPage(props) {
     return (
       // <Col lg={6} md={8} xs={24}>
       <div
+        key={index}
         style={{
           marginRight: "15px",
           marginBottom: "10px",
           display: "inline-block",
+          width: CardSize.width+"px"
         }}
       >
         <Popover content={content(product)} title="Edit">
           <Card
-            style={{ width: "270px" }}
             hoverable={true}
             cover={
               <a href={`/product/${product._id}`}>
                 <img
-                  style={{ width: "270px", height: `${752 / 270}%` }}
+                  style={{ width: CardSize.width+"px", height: `${parseInt(CardSize.width/752*100)}%` }}
                   src={`http://localhost:5000/${product.images[0]}`}
+                  alt=""
                 />
               </a>
             }
@@ -152,7 +180,7 @@ function UserPage(props) {
           <h2>No post yet...</h2>
         </div>
       ) : (
-        <div>
+        <div style={{ width: 'calc(100% + 15px)' }} >
           <Masonry
             className={"my-gallery-class"} // default ''
             options={{ transitionDuration: 2 }} // default {}

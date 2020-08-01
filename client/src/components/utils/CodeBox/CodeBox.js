@@ -89,8 +89,8 @@ export default class extends Component {
   }
   render() {
     const codeBox = [];
-    this.setState({ ...this.state, dom: [] });
-    // this.state.dom = [];
+    // this.setState({ ...this.state, dom: [] });
+    this.state.dom = [];
     const inputType = this.props.type || "input";
     for (let i = 0; i < this.props.length; i++) {
       codeBox.push(
@@ -103,8 +103,12 @@ export default class extends Component {
             autoCapitalize="off"
             spellCheck="false"
             value={this.state.code[i]}
+            // ref={(dom) => {
+            //   let newDom = this.state.dom;
+            //   newDom[i] = dom;
+            //   this.setState({...this.state, dom: newDom});
+            // }}
             ref={(dom) => (this.state.dom[i] = dom)}
-            // ref={(dom) => (this.state.dom[i] = dom)}
             onFocus={(e) => textSelect(e.target)}
             onClick={(e) => textSelect(e.target)}
             onChange={(e) => this.onChange(e, i)}

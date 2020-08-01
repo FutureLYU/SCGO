@@ -25,7 +25,7 @@ function UploadProductPage(props) {
     Axios.get("/api/users/getUploadProduct").then((response) => {
       setItems(response.data.uploadProduct);
     });
-  }, [props.user.userData]);
+  }, [props]);
 
   const onAdd = (event) => {
     // set state of Form Value
@@ -137,7 +137,7 @@ function UploadProductPage(props) {
       if (item.key === parseInt(key)) {
         categoryname = item.value;
       }
-      return
+      return null;
     });
     return categoryname;
   };
@@ -148,7 +148,7 @@ function UploadProductPage(props) {
       if (tag.key === parseInt(key)) {
         tagname = tag.value;
       }
-      return
+      return null;
     });
     return tagname;
   };
@@ -161,37 +161,35 @@ function UploadProductPage(props) {
             <Col lg={8} xs={24}>
               <ImageSlider images={item.images} />
             </Col>
-            <Col lg={12} xs={24}>
-              <p>Title: {item.title}</p>
-              <p>Description: {item.description}</p>
-              <p>Price: {item.price}</p>
+            <Col lg={10} xs={24}>
+              <p>Title:&nbsp;{item.title}</p>
+              <p>Description:&nbsp;{item.description}</p>
+              <p>Price:&nbsp;{item.price}</p>
               <p>
-                交易方式:{" "}
+                交易方式:&nbsp;
                 <Tag style={{ width: "100px", textAlign: "center" }}>
                   {getTagByKey(item.tag)}
                 </Tag>
               </p>
               <p>
-                物品种类:{" "}
+                物品种类:&nbsp;
                 <Tag style={{ width: "100px", textAlign: "center" }}>
                   {getCategoryByKey(item.category)}
                 </Tag>
               </p>
             </Col>
-            <Col lg={4} xs={24}>
+            <Col lg={6} xs={24}>
               <Button
                 style={{ width: "100px", margin: "10px auto" }}
                 onClick={() => onEdit(index)}
               >
-                {" "}
-                Edit{" "}
+                &nbsp;Edit&nbsp;
               </Button>
               <Button
                 style={{ width: "100px", margin: "10px auto" }}
                 onClick={() => onDelete(index)}
               >
-                {" "}
-                Delete{" "}
+                &nbsp;Delete&nbsp;
               </Button>
             </Col>
           </Row>

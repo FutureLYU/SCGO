@@ -18,7 +18,7 @@ function UserControl(props) {
             }
             getUserInfo({});
         }
-    }, [props.user.userData]);
+    }, [props]);
 
 
     const handleProductClick = () => {
