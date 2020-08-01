@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "react boiler plate",
   "main": "index.js",
-  "engine": {
-    "node": "10.16.0",
-    "npm": "6.9.0"
+  "engines": {
+    "node": "11.14.0",
+    "npm": "6.14.5"
   },
   "scripts": {
+    "heroku-postbuild": "mkdir uploads && cd client && npm install && npm run build",
     "start": "node server/index.js",
     "backend": "nodemon server/index.js",
     "frontend": "npm run start --prefix client",
@@ -23,6 +24,7 @@
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",
     "debug": "^4.1.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
