@@ -23,7 +23,7 @@ function CreateLongPicture(props) {
         let height = item.heights[0];
         let newImage = new Image();
         newImage.setAttribute("crossOrigin", "Anonymous");
-        newImage.src = `http://localhost:5000/${item.images[0]}`;
+        newImage.src = `http://3.15.2.141/${item.images[0]}`;
         if (newImage.complete) {
           drawCanvas(newImage, text, height);
         } else {

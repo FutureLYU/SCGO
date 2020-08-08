@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Button, Col, Row, Card, Tag } from "antd";
-import ImageSlider from "../../utils/ImageSlider";
 import Axios from "axios";
 import CreateLongPicture from "../../utils/CreatLongPicture/CreateLongPicture";
 import ProductEditForm from "../../utils/ProductEditForm";
@@ -159,7 +158,8 @@ function UploadProductPage(props) {
         <Card hoverable={false} sytle={{ width: "80%" }}>
           <Row gutter={16}>
             <Col lg={8} xs={24}>
-              <ImageSlider images={item.images} />
+              <img style={{ width: '100%', maxHeight: '150px', objectFit: 'contain' }}
+                src={`http://3.15.2.141/${item.images[0]}`} alt="productImage" />
             </Col>
             <Col lg={10} xs={24}>
               <p>Title:&nbsp;{item.title}</p>

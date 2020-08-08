@@ -115,7 +115,7 @@ function AdminProductPage(props) {
               <a href={`/product/${product._id}`}>
                 <img
                   style={{ width: "270px", height: `${752 / 270}%` }}
-                  src={`http://localhost:5000/${product.images[0]}`}
+                  src={`http://3.15.2.141/${product.images[0]}`}
                   alt=""
                 />
               </a>

@@ -10,8 +10,8 @@ function ProductImage(props) {
 
             props.detail.images && props.detail.images.map(item => {
                 images.push({
-                    original: `http://localhost:5000/${item}`,
-                    thumbnail: `http://localhost:5000/${item}`
+                    original: `http://3.15.2.141/${item}`,
+                    thumbnail: `http://3.15.2.141/${item}`
                 })
                 return null;
             })

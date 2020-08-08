@@ -147,6 +147,7 @@ function LoginPage(props) {
               <Form.Item>
                 <Checkbox
                   id="rememberMe"
+                  keyvalue="rememberMe"
                   onChange={handleRememberMe}
                   checked={rememberMe}
                 >

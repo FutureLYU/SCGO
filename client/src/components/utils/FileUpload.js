@@ -64,8 +64,6 @@ function FileUpload(props) {
                         }}
                             {...getRootProps()}
                         >
-                            {/*console.log('getRootProps', { ...getRootProps() })*/}
-                            {/*console.log('getInputProps', { ...getInputProps() })*/}
                             <input {...getInputProps()} />
                             <Icon type="plus" style={{ fontSize: '2rem' }} />
 
@@ -77,7 +75,7 @@ function FileUpload(props) {
                         <div onClick={() => onDelete(image)}>
                             <img 
                                 style={{ minWidth: '200px', width: '200px', height: '160px', objectFit: 'contain' }} 
-                                src={`http://localhost:5000/${image}`} 
+                                src={`http://3.15.2.141/${image}`} 
                                 alt={`productImg-${index}`} 
                             />
                         </div>

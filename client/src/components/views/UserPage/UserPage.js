@@ -36,7 +36,7 @@ function UserPage(props) {
     return (()=>{
       window.removeEventListener('resize', onResize) 
     })
-  },[])
+  },[onResize])
 
   useEffect(() => {
     if (props.user.userData) {
@@ -142,8 +142,8 @@ function UserPage(props) {
             cover={
               <a href={`/product/${product._id}`}>
                 <img
-                  style={{ width: CardSize.width+"px", height: `${parseInt(CardSize.width/752*100)}%` }}
-                  src={`http://localhost:5000/${product.images[0]}`}
+                  style={{ width: CardSize.width-2+"px" }}
+                  src={`http://3.15.2.141/${product.images[0]}`}
                   alt=""
                 />
               </a>

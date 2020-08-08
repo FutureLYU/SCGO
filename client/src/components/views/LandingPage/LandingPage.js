@@ -55,7 +55,7 @@ function LandingPage(props) {
     return (()=>{
       window.removeEventListener('resize', onResize) 
     })
-  },[])
+  },[onResize])
 
   useEffect(() => {
     Axios.post("/api/product/getProducts", { skip: 0, limit: Limit }).then((response) => {
@@ -150,6 +150,7 @@ function LandingPage(props) {
         <Col lg={12} xs={24}>
           <CheckBox
             key={1}
+            keyvalue={1}
             defaultActiveKey={["0"]}
             list={tags}
             handleFilters={(filters) => handleFilters(filters, "tag")}
@@ -160,6 +161,7 @@ function LandingPage(props) {
         <Col lg={12} xs={24}>
           <CheckBox
             key={2}
+            keyvalue={2}
             defaultActiveKey={["0"]}
             list={category}
             handleFilters={(filters) => handleFilters(filters, "category")}
@@ -215,11 +217,12 @@ function LandingPage(props) {
             >
               {Products.map((product, index) => (
                 <div
+                  key={index}
                   style={{
                     marginRight: "15px",
                     marginBottom: "10px",
                     display: "inline-block",
-                    width: CardSize.width
+                    width: CardSize.width+'px'
                   }}
                 >
                   <Card
@@ -227,8 +230,8 @@ function LandingPage(props) {
                     cover={
                       <a href={`/product/${product._id}`}>
                         <img
-                          style={{ width: CardSize.width+"px", height: `${parseInt(CardSize.width/752*100)}%` }}
-                          src={`http://localhost:5000/${product.images[0]}`}
+                          style={{ width: CardSize.width-2+'px' }}
+                          src={`http://3.15.2.141/${product.images[0]}`}
                           alt=""
                         />
                       </a>
