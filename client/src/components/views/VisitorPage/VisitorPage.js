@@ -104,7 +104,7 @@ function UserPage(props) {
           <h2>No post yet...</h2>
         </div>
       ) : (
-        <div style={{ width: 'calc(100% + 15px)' }} >
+        <div style={{ width: 'calc(100% + 30px)' }} >
           <Masonry
             className={"my-gallery-class"} // default ''
             options={{ transitionDuration: 2 }} // default {}

@@ -208,7 +208,7 @@ function LandingPage(props) {
           </h2>
         </div>
       ) : (
-        <div style={{ width: 'calc(100% + 15px)', overflowX: "hidden", overflowY: "auto" }}>
+        <div style={{ width: 'calc(100% + 30px)', overflowX: "hidden", overflowY: "auto" }}>
           <InfiniteScroll
             dataLength={Products.length} //This is important field to render the next data
             next={() => onLoadMore()}
