@@ -50,7 +50,7 @@ function ContactAddForm(props) {
     }
 
     return (
-        <div>
+        <div style={{ maxWidth: document.documentElement.clientWidth*0.95 }}>
             <Modal
                 title="Add Contact"
                 visible={props.visible}

@@ -14,6 +14,15 @@ function UploadProductPage(props) {
   const [showPicture, setshowPicture] = useState(false);
   const [CurrentItem, setCurrentItem] = useState({});
   const [ContactForm, setContactForm] = useState({ visible: false });
+  const isPC = function(){
+    var userAgentInfo = navigator.userAgent;
+    var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];  
+    var flag = true;  
+    for (var v = 0; v < Agents.length; v++) {  
+        if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }  
+    }  
+    return flag;
+  }();
 
   useEffect(() => {
     if (props.user.userData) {
@@ -155,16 +164,16 @@ function UploadProductPage(props) {
   const renderItemCards = Items.map((item, index) => {
     return (
       <Col>
-        <Card hoverable={false} sytle={{ width: "80%" }}>
+        <Card hoverable={false} sytle={{ width: isPC? "80%": "90%" }}>
           <Row gutter={16}>
             <Col lg={8} xs={24}>
               <img style={{ width: '100%', maxHeight: '150px', objectFit: 'contain' }}
                 src={`http://3.15.2.141/${item.images[0]}`} alt="productImage" />
             </Col>
             <Col lg={10} xs={24}>
-              <p>Title:&nbsp;{item.title}</p>
-              <p>Description:&nbsp;{item.description}</p>
-              <p>Price:&nbsp;{item.price}</p>
+              <p>商品名称:&nbsp;{item.title}</p>
+              <p>商品描述:&nbsp;{item.description}</p>
+              <p>商品价格:&nbsp;{item.price}</p>
               <p>
                 交易方式:&nbsp;
                 <Tag style={{ width: "100px", textAlign: "center" }}>
@@ -179,18 +188,21 @@ function UploadProductPage(props) {
               </p>
             </Col>
             <Col lg={6} xs={24}>
-              <Button
-                style={{ width: "100px", margin: "10px auto" }}
-                onClick={() => onEdit(index)}
-              >
-                &nbsp;Edit&nbsp;
-              </Button>
-              <Button
-                style={{ width: "100px", margin: "10px auto" }}
-                onClick={() => onDelete(index)}
-              >
-                &nbsp;Delete&nbsp;
-              </Button>
+              <div style={{ margin: "auto" }}>
+                <Button
+                  style={{ width: "100px", margin: "10px auto" }}
+                  onClick={() => onEdit(index)}
+                >
+                  &nbsp;Edit&nbsp;
+                </Button>
+                {isPC ? null: ' '}
+                <Button
+                  style={{ width: "100px", margin: "10px auto" }}
+                  onClick={() => onDelete(index)}
+                >
+                  &nbsp;Delete&nbsp;
+                </Button>
+              </div>
             </Col>
           </Row>
         </Card>
@@ -199,7 +211,7 @@ function UploadProductPage(props) {
   });
 
   return (
-    <div style={{ width: "80%", margin: "3rem auto" }}>
+    <div style={{ width: isPC? "80%": "95%", margin: "3rem auto" }}>
       {Items.length === 0 ? (
         <div
           style={{
@@ -212,7 +224,7 @@ function UploadProductPage(props) {
           <h2>No post yet...</h2>
         </div>
       ) : (
-        <div style={{ width: "70%", margin: "3rem auto" }}>
+        <div style={{ width: isPC ? "70%":"95%", margin: "3rem auto" }}>
           <Row gutter={[16, 16]}>{renderItemCards}</Row>
         </div>
       )}
@@ -270,6 +282,7 @@ function UploadProductPage(props) {
           height={Items.reduce((total, cur) => {
             return total + cur.heights[0];
           }, 0)}
+          user={props.user}
         />
       </div>
     </div>

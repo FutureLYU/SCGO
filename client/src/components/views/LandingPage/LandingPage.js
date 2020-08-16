@@ -20,6 +20,17 @@ function LandingPage(props) {
     category: [],
     tag: [],
   });
+  const isPC = function(){
+    var userAgentInfo = navigator.userAgent;
+    var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];  
+    var flag = true;  
+    for (var v = 0; v < Agents.length; v++) {  
+        if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }  
+    }  
+    return flag;
+  }();
+
+
 
   const getTagByKey = (key) => {
     let tagname = "None";
@@ -33,22 +44,22 @@ function LandingPage(props) {
   };
 
   const onResize = useCallback(()=>{
-    let boxwidth = document.documentElement.clientWidth * 0.75;
-    let cardnum = parseInt(boxwidth / 300)+1;
+    let boxwidth = document.documentElement.clientWidth * (isPC? 0.75:0.95);
+    let cardnum = isPC? parseInt(boxwidth / 300)+1: 2;
     let cardwidth = parseInt((boxwidth-15*(cardnum-1))/cardnum);
     setCardSize({
       width: cardwidth,
     })
-  },[])
+  },[isPC])
 
   useEffect(() => {
-    let boxwidth = document.documentElement.clientWidth * 0.75;
-    let cardnum = parseInt(boxwidth / 300)+1;
+    let boxwidth = document.documentElement.clientWidth * (isPC? 0.75:0.95);
+    let cardnum = isPC? parseInt(boxwidth / 300)+1: 2;
     let cardwidth = parseInt((boxwidth-15*(cardnum-1))/cardnum);
     setCardSize({
       width: cardwidth,
     })
-  }, [])
+  }, [isPC])
 
   useEffect(()=>{
     window.addEventListener('resize', onResize);
@@ -132,7 +143,7 @@ function LandingPage(props) {
     <div
       style={{
         height: "100%",
-        width: "75%",
+        width: isPC? "75%": "95%",
         margin: "3rem auto",
         overflow: "hidden",
       }}
@@ -225,30 +236,31 @@ function LandingPage(props) {
                     width: CardSize.width+'px'
                   }}
                 >
-                  <Card
-                    hoverable={true}
-                    cover={
-                      <a href={`/product/${product._id}`}>
-                        <img
-                          style={{ width: CardSize.width-2+'px' }}
-                          src={`http://3.15.2.141/${product.images[0]}`}
-                          alt=""
-                        />
-                      </a>
-                    }
-                  >
-                    <Meta
-                      title={product.title}
-                      description={
-                        <div>
-                          {`$${product.price}`}
-                          <Tag style={{ float: "right" }}>
-                            {getTagByKey(product.tag)}
-                          </Tag>
-                        </div>
+                  <a href={`/product/${product._id}`}>
+                    <Card
+                      hoverable={true}
+                      cover={
+                        
+                          <img
+                            style={{ width: CardSize.width-2+'px' }}
+                            src={`http://3.15.2.141/${product.images[0]}`}
+                            alt=""
+                          />
                       }
-                    />
-                  </Card>
+                    >
+                      <Meta
+                        title={product.title}
+                        description={
+                          <div>
+                            {`$${product.price}`}
+                            <Tag style={{ float: "right" }}>
+                              {getTagByKey(product.tag)}
+                            </Tag>
+                          </div>
+                        }
+                      />
+                    </Card>
+                  </a>
                 </div>
               ))}
             </Masonry>

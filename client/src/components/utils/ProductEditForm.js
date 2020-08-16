@@ -93,7 +93,7 @@ function ProductEditForm(props) {
     }
 
     return (
-        <div>
+        <div style={{ maxWidth: document.documentElement.clientWidth*0.95 }}>
             <Modal
                 title="Product"
                 visible={props.visible}
@@ -137,7 +137,7 @@ function ProductEditForm(props) {
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
                         value={PlaceValue !== -1? PlaceValue:null}
-                        disabled={Means}
+                        disabled={Means? true:false}
                     >
                         {placesData.map((place) => <Option key={place.key} value={place.key}>{place.value}</Option>)}
                     </Select>

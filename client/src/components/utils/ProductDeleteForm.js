@@ -15,17 +15,18 @@ function ProductDeleteForm(props) {
     }, [props.admin])
 
     const handleOk = () => {
+        if (!ReasonValue) {
+            return alert("Select at least one of the reasons")
+        }
         const reason = {
             reason: ReasonValue
         }
 
         props.handleOk(reason);
-        setReasonValue("");
     }
 
     const handleCancel = () => {
         props.handleCancel();
-        setReasonValue("");
     }
 
     return (

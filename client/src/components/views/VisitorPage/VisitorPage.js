@@ -7,24 +7,33 @@ function UserPage(props) {
   const [Products, setProducts] = useState([]);
   const [CardSize, setCardSize] = useState({ width: 0 })
   const userid = props.match.params.userid;
+  const isPC = function(){
+    var userAgentInfo = navigator.userAgent;
+    var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];  
+    var flag = true;  
+    for (var v = 0; v < Agents.length; v++) {  
+        if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }  
+    }  
+    return flag;
+  }();
 
   const onResize = useCallback(()=>{
-    let boxwidth = document.documentElement.clientWidth * 0.75;
-    let cardnum = parseInt(boxwidth / 300)+1;
+    let boxwidth = document.documentElement.clientWidth * (isPC? 0.75:0.95);
+    let cardnum = isPC? parseInt(boxwidth / 300)+1: 2;
     let cardwidth = parseInt((boxwidth-15*(cardnum-1))/cardnum);
     setCardSize({
       width: cardwidth,
     })
-  },[])
+  },[isPC])
 
   useEffect(() => {
-    let boxwidth = document.documentElement.clientWidth * 0.75;
-    let cardnum = parseInt(boxwidth / 300)+1;
+    let boxwidth = document.documentElement.clientWidth * (isPC? 0.75:0.95);
+    let cardnum = isPC? parseInt(boxwidth / 300)+1: 2;
     let cardwidth = parseInt((boxwidth-15*(cardnum-1))/cardnum);
     setCardSize({
       width: cardwidth,
     })
-  }, [])
+  }, [isPC])
 
   useEffect(()=>{
     window.addEventListener('resize', onResize);
@@ -57,27 +66,26 @@ function UserPage(props) {
           width: CardSize.width + "px"
         }}
       >
-        <Card
-          hoverable={true}
-          cover={
-            <a href={`/product/${product._id}`}>
+        <a href={`/product/${product._id}`}>
+          <Card
+            hoverable={true}
+            cover={
               <img
                 style={{ width: CardSize.width-2+"px" }}
                 src={`http://3.15.2.141/${product.images[0]}`}
                 alt=""
-              />
-            </a>
-          }
-        >
-          <Card.Meta title={product.title} description={`$${product.price}`} />
-        </Card>
+              />       
+            }
+          >
+            <Card.Meta title={product.title} description={`$${product.price}`} />
+          </Card>
+        </a>
       </div>
-      // </Col>
     );
   });
 
   return (
-    <div style={{ width: "75%", margin: "3rem auto" }}>
+    <div style={{ width: isPC? "75%":"95%", margin: "3rem auto" }}>
       <div style={{ textAlign: "center" }}>
         <h1>
           卖家的物品 <Icon type="account-book" />
