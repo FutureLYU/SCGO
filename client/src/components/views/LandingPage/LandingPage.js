@@ -10,27 +10,37 @@ import InfiniteScroll from "react-infinite-scroll-component";
 const { Meta } = Card;
 
 function LandingPage(props) {
+  const path =
+    process.env.NODE_ENV === "production" ? "." : "http://localhost:5000";
   const Limit = 8; // setLimit
   const [Products, setProducts] = useState([]);
   const [Skip, setSkip] = useState(0);
   const [SearchTerms, setSearchTerms] = useState("");
   const [HasMore, setHasMore] = useState(true);
-  const [CardSize, setCardSize] = useState({ width: 0 })
+  const [CardSize, setCardSize] = useState({ width: 0 });
   const [Filters, setFilters] = useState({
     category: [],
     tag: [],
   });
-  const isPC = function(){
+  const isPC = (function () {
     var userAgentInfo = navigator.userAgent;
-    var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];  
-    var flag = true;  
-    for (var v = 0; v < Agents.length; v++) {  
-        if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }  
-    }  
+    var Agents = [
+      "Android",
+      "iPhone",
+      "SymbianOS",
+      "Windows Phone",
+      "iPad",
+      "iPod",
+    ];
+    var flag = true;
+    for (var v = 0; v < Agents.length; v++) {
+      if (userAgentInfo.indexOf(Agents[v]) > 0) {
+        flag = false;
+        break;
+      }
+    }
     return flag;
-  }();
-
-
+  })();
 
   const getTagByKey = (key) => {
     let tagname = "None";
@@ -43,40 +53,42 @@ function LandingPage(props) {
     return tagname;
   };
 
-  const onResize = useCallback(()=>{
-    let boxwidth = document.documentElement.clientWidth * (isPC? 0.75:0.95);
-    let cardnum = isPC? parseInt(boxwidth / 300)+1: 2;
-    let cardwidth = parseInt((boxwidth-15*(cardnum-1))/cardnum);
+  const onResize = useCallback(() => {
+    let boxwidth = document.documentElement.clientWidth * (isPC ? 0.75 : 0.95);
+    let cardnum = isPC ? parseInt(boxwidth / 300) + 1 : 2;
+    let cardwidth = parseInt((boxwidth - 15 * (cardnum - 1)) / cardnum);
     setCardSize({
       width: cardwidth,
-    })
-  },[isPC])
-
-  useEffect(() => {
-    let boxwidth = document.documentElement.clientWidth * (isPC? 0.75:0.95);
-    let cardnum = isPC? parseInt(boxwidth / 300)+1: 2;
-    let cardwidth = parseInt((boxwidth-15*(cardnum-1))/cardnum);
-    setCardSize({
-      width: cardwidth,
-    })
-  }, [isPC])
-
-  useEffect(()=>{
-    window.addEventListener('resize', onResize);
-    return (()=>{
-      window.removeEventListener('resize', onResize) 
-    })
-  },[onResize])
-
-  useEffect(() => {
-    Axios.post("/api/product/getProducts", { skip: 0, limit: Limit }).then((response) => {
-      if (response.data.success) {
-        setHasMore(response.data.postSize < Limit ? false : true);
-        setProducts(response.data.products);
-      } else {
-        alert("Failed to fectch product datas");
-      }
     });
+  }, [isPC]);
+
+  useEffect(() => {
+    let boxwidth = document.documentElement.clientWidth * (isPC ? 0.75 : 0.95);
+    let cardnum = isPC ? parseInt(boxwidth / 300) + 1 : 2;
+    let cardwidth = parseInt((boxwidth - 15 * (cardnum - 1)) / cardnum);
+    setCardSize({
+      width: cardwidth,
+    });
+  }, [isPC]);
+
+  useEffect(() => {
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
+  }, [onResize]);
+
+  useEffect(() => {
+    Axios.post("/api/product/getProducts", { skip: 0, limit: Limit }).then(
+      (response) => {
+        if (response.data.success) {
+          setHasMore(response.data.postSize < Limit ? false : true);
+          setProducts(response.data.products);
+        } else {
+          alert("Failed to fectch product datas");
+        }
+      }
+    );
   }, []);
 
   const getProducts = (variables) => {
@@ -143,7 +155,7 @@ function LandingPage(props) {
     <div
       style={{
         height: "100%",
-        width: isPC? "75%": "95%",
+        width: isPC ? "75%" : "95%",
         margin: "3rem auto",
         overflow: "hidden",
       }}
@@ -204,11 +216,17 @@ function LandingPage(props) {
         >
           <h2>
             暂未相关物品，您可以重新选择筛选/搜索内容或点击
-            <a href='/'>Home</a>返回
+            <a href="/">Home</a>返回
           </h2>
         </div>
       ) : (
-        <div style={{ width: 'calc(100% + 30px)', overflowX: "hidden", overflowY: "auto" }}>
+        <div
+          style={{
+            width: "calc(100% + 30px)",
+            overflowX: "hidden",
+            overflowY: "auto",
+          }}
+        >
           <InfiniteScroll
             dataLength={Products.length} //This is important field to render the next data
             next={() => onLoadMore()}
@@ -233,19 +251,18 @@ function LandingPage(props) {
                     marginRight: "15px",
                     marginBottom: "10px",
                     display: "inline-block",
-                    width: CardSize.width+'px'
+                    width: CardSize.width + "px",
                   }}
                 >
                   <a href={`/product/${product._id}`}>
                     <Card
                       hoverable={true}
                       cover={
-                        
-                          <img
-                            style={{ width: CardSize.width-2+'px' }}
-                            src={`http://3.15.2.141/${product.images[0]}`}
-                            alt=""
-                          />
+                        <img
+                          style={{ width: CardSize.width - 2 + "px" }}
+                          src={`${path}/${product.images[0]}`}
+                          alt=""
+                        />
                       }
                     >
                       <Meta

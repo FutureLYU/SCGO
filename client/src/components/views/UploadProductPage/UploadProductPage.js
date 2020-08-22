@@ -7,6 +7,8 @@ import ContactAddForm from "../../utils/ContactAddForm";
 import { categoryData, tagsData } from "../../utils/Data";
 
 function UploadProductPage(props) {
+  const path =
+    process.env.NODE_ENV === "production" ? "." : "http://localhost:5000";
   const [Items, setItems] = useState([]);
   const [FormValue, setFormValue] = useState({ visible: false });
   const [Edit, setEdit] = useState(false);
@@ -14,15 +16,25 @@ function UploadProductPage(props) {
   const [showPicture, setshowPicture] = useState(false);
   const [CurrentItem, setCurrentItem] = useState({});
   const [ContactForm, setContactForm] = useState({ visible: false });
-  const isPC = function(){
+  const isPC = (function () {
     var userAgentInfo = navigator.userAgent;
-    var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];  
-    var flag = true;  
-    for (var v = 0; v < Agents.length; v++) {  
-        if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }  
-    }  
+    var Agents = [
+      "Android",
+      "iPhone",
+      "SymbianOS",
+      "Windows Phone",
+      "iPad",
+      "iPod",
+    ];
+    var flag = true;
+    for (var v = 0; v < Agents.length; v++) {
+      if (userAgentInfo.indexOf(Agents[v]) > 0) {
+        flag = false;
+        break;
+      }
+    }
     return flag;
-  }();
+  })();
 
   useEffect(() => {
     if (props.user.userData) {
@@ -164,11 +176,18 @@ function UploadProductPage(props) {
   const renderItemCards = Items.map((item, index) => {
     return (
       <Col>
-        <Card hoverable={false} sytle={{ width: isPC? "80%": "90%" }}>
+        <Card hoverable={false} sytle={{ width: isPC ? "80%" : "90%" }}>
           <Row gutter={16}>
             <Col lg={8} xs={24}>
-              <img style={{ width: '100%', maxHeight: '150px', objectFit: 'contain' }}
-                src={`http://3.15.2.141/${item.images[0]}`} alt="productImage" />
+              <img
+                style={{
+                  width: "100%",
+                  maxHeight: "150px",
+                  objectFit: "contain",
+                }}
+                src={`${path}/${item.images[0]}`}
+                alt="productImage"
+              />
             </Col>
             <Col lg={10} xs={24}>
               <p>商品名称:&nbsp;{item.title}</p>
@@ -195,7 +214,7 @@ function UploadProductPage(props) {
                 >
                   &nbsp;Edit&nbsp;
                 </Button>
-                {isPC ? null: ' '}
+                {isPC ? null : " "}
                 <Button
                   style={{ width: "100px", margin: "10px auto" }}
                   onClick={() => onDelete(index)}
@@ -211,7 +230,7 @@ function UploadProductPage(props) {
   });
 
   return (
-    <div style={{ width: isPC? "80%": "95%", margin: "3rem auto" }}>
+    <div style={{ width: isPC ? "80%" : "95%", margin: "3rem auto" }}>
       {Items.length === 0 ? (
         <div
           style={{
@@ -224,7 +243,7 @@ function UploadProductPage(props) {
           <h2>No post yet...</h2>
         </div>
       ) : (
-        <div style={{ width: isPC ? "70%":"95%", margin: "3rem auto" }}>
+        <div style={{ width: isPC ? "70%" : "95%", margin: "3rem auto" }}>
           <Row gutter={[16, 16]}>{renderItemCards}</Row>
         </div>
       )}
