@@ -3,7 +3,7 @@ import ImageGallery from "react-image-gallery";
 
 function ProductImage(props) {
   const path =
-    process.env.NODE_ENV === "production" ? "." : "http://localhost:5000";
+    process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
   const [Images, setImages] = useState([]);
 
   useEffect(() => {

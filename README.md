@@ -53,15 +53,21 @@ $ npm run dev
 
 # Update
 
+### 08-24 update (hanxi)
+
+- 兼容了 dev 和 prod 模式的路径
+- debug 了无法上传至服务器端的问题
+- 在移动端模式中取消了长图 save 按钮
+
 ### 07-23 update (Harold)
 
 - 添加商品管理中下架功能
-- 调整CSS样式
+- 调整 CSS 样式
 
 ### 07-21 update (Harold)
 
-- 添加用户管理功能 UserControl.js 包含search user id, block, unblock功能
-- 添加contact page
+- 添加用户管理功能 UserControl.js 包含 search user id, block, unblock 功能
+- 添加 contact page
 
 ### 07-19 update (hanxi)
 

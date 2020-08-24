@@ -8,7 +8,7 @@ import { categoryData, tagsData } from "../../utils/Data";
 
 function UploadProductPage(props) {
   const path =
-    process.env.NODE_ENV === "production" ? "." : "http://localhost:5000";
+    process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
   const [Items, setItems] = useState([]);
   const [FormValue, setFormValue] = useState({ visible: false });
   const [Edit, setEdit] = useState(false);

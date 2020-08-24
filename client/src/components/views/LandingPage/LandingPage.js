@@ -11,7 +11,7 @@ const { Meta } = Card;
 
 function LandingPage(props) {
   const path =
-    process.env.NODE_ENV === "production" ? "." : "http://localhost:5000";
+    process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
   const Limit = 8; // setLimit
   const [Products, setProducts] = useState([]);
   const [Skip, setSkip] = useState(0);

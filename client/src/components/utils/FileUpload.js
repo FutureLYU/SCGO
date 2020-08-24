@@ -4,7 +4,7 @@ import { Icon } from "antd";
 import Axios from "axios";
 function FileUpload(props) {
   const path =
-    process.env.NODE_ENV === "production" ? "." : "http://localhost:5000";
+    process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
   const [Images, setImages] = useState([]);
   const [Heights, setHeights] = useState([]);
   const [Preview, setPreview] = useState(false);

@@ -5,7 +5,7 @@ const QRCode = require("qrcode.react");
 
 function CreateLongPicture(props) {
   const path =
-    process.env.NODE_ENV === "production" ? "." : "http://localhost:5000";
+    process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
   const canvasRef = useRef();
   const isPC = (function () {
     var userAgentInfo = navigator.userAgent;

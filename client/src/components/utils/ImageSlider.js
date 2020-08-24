@@ -3,7 +3,7 @@ import { Carousel } from "antd";
 
 function ImageSlider(props) {
   const path =
-    process.env.NODE_ENV === "production" ? "." : "http://localhost:5000";
+    process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
   return (
     <div>
       <Carousel autoplay>

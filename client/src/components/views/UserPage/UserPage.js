@@ -7,7 +7,7 @@ import ProductDeleteForm from "../../utils/ProductDeleteForm";
 
 function UserPage(props) {
   const path =
-    process.env.NODE_ENV === "production" ? "." : "http://localhost:5000";
+    process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
   const [Products, setProducts] = useState([]);
   const [FormValue, setFormValue] = useState({ visible: false });
   const [CurrentItem, setCurrentItem] = useState({});
