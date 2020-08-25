@@ -5,7 +5,10 @@ const multer = require("multer");
 const sharp = require("sharp");
 
 const { auth } = require("../middleware/auth");
-
+const path =
+  process.env.NODE_ENV === "production"
+    ? "/home/ubuntu/server/uploads"
+    : "uploads";
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
@@ -37,7 +40,7 @@ const resizeImages = async (req, res, next) => {
   await sharp(req.file.buffer)
     .resize({ width: 752 })
     .jpeg({ quality: 90 })
-    .toFile(`uploads/${newFilename}`)
+    .toFile(`${path}/${newFilename}`)
     .then((info) => (req.body.height = info.height));
   req.body.images = `uploads/${newFilename}`;
   next();
@@ -72,14 +75,10 @@ router.post("/updateProduct", auth, (req, res) => {
   // save new product into the DB
   const product = req.body;
 
-  Product.findOneAndUpdate(
-    { _id: product._id },
-    product,
-    (err) => {
-      if (err) return res.json({ success: false, err });
-      return res.status(200).json({ success: true })
-    }
-  )
+  Product.findOneAndUpdate({ _id: product._id }, product, (err) => {
+    if (err) return res.json({ success: false, err });
+    return res.status(200).json({ success: true });
+  });
 });
 
 router.post("/getProducts", (req, res) => {

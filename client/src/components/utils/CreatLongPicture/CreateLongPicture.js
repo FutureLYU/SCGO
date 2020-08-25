@@ -1,27 +1,39 @@
 import React, { useEffect, useRef } from "react";
-import { Modal } from "antd";
+import { Modal, Button } from "antd";
 
-const QRCode = require('qrcode.react');
+const QRCode = require("qrcode.react");
 
 function CreateLongPicture(props) {
+  const path =
+    process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
   const canvasRef = useRef();
-  const isPC = function(){
+  const isPC = (function () {
     var userAgentInfo = navigator.userAgent;
-    var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];  
-    var flag = true;  
-    for (var v = 0; v < Agents.length; v++) {  
-        if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }  
-    }  
+    var Agents = [
+      "Android",
+      "iPhone",
+      "SymbianOS",
+      "Windows Phone",
+      "iPad",
+      "iPod",
+    ];
+    var flag = true;
+    for (var v = 0; v < Agents.length; v++) {
+      if (userAgentInfo.indexOf(Agents[v]) > 0) {
+        flag = false;
+        break;
+      }
+    }
     return flag;
-  }();
+  })();
 
   useEffect(() => {
     if (props.visible) {
       var position = 0;
-      var count = props.items.length+1;
+      var count = props.items.length + 1;
       var mycv = canvasRef.current;
       var myctx = mycv.getContext("2d");
-      myctx.fillStyle = '#FFFFFF';
+      myctx.fillStyle = "#FFFFFF";
       myctx.fillRect(0, 0, mycv.width, mycv.height);
 
       function drawCanvas(image, text, height) {
@@ -44,14 +56,14 @@ function CreateLongPicture(props) {
         myctx.textAlign = "center";
         myctx.fillText("扫码查看更多信息", 370, productheight + 620, 700);
       }
-      
+
       function showPreivew(count) {
         if (count === 0) {
-          let canvasImg = document.getElementById('TemplateLongPicture');
+          let canvasImg = document.getElementById("TemplateLongPicture");
           let picpreview = new Image();
           picpreview.src = canvasImg.toDataURL("image/png");
 
-          let imglink = document.getElementById('previewimg');
+          let imglink = document.getElementById("previewimg");
           imglink.src = picpreview.src;
           imglink.download = `SCGO_LongPicture_${Date.now()}`;
           imglink.style.objectFit = "contain";
@@ -64,7 +76,7 @@ function CreateLongPicture(props) {
         let height = item.heights[0];
         let newImage = new Image();
         newImage.setAttribute("crossOrigin", "Anonymous");
-        newImage.src = `http://3.15.2.141/${item.images[0]}`;
+        newImage.src = `${path}/${item.images[0]}`;
         if (newImage.complete) {
           drawCanvas(newImage, text, height);
           count--;
@@ -82,7 +94,7 @@ function CreateLongPicture(props) {
       });
 
       let qrImage = new Image();
-      let qrsrc = document.getElementById('qrcode');
+      let qrsrc = document.getElementById("qrcode");
       qrImage.src = qrsrc.toDataURL("image/png");
       if (qrImage.complete) {
         drawQRCode(qrImage, props.height);
@@ -118,35 +130,78 @@ function CreateLongPicture(props) {
   };
 
   return (
-    <div style={{ width: 600, maxWidth: document.documentElement.clientWidth*0.95 }}>
-      <Modal
-        forceRender={true}
-        title="Successfully uploaded ! Click save to download your picture"
-        visible={props.visible}
-        onOk={handleSave}
-        onCancel={handleCancel}
-        okText="save"
-        cancelText="skip"
-      >
-        <template>
-          <QRCode
-            id="qrcode"
-            value={props.user.userData? `http://3.15.2.141/user/${props.user.userData._id}`:"http://3.15.2.141/"}
-            size={ isPC? 250:170 }
-            fgColor="#000000"
-          />
-          <canvas
-            id="TemplateLongPicture"
-            ref={canvasRef}
-            width={props.width}
-            height={props.height+752}
-          />
-        </template>
-        <div id="picpreview" style={{ width: "95%", margin: "auto" }}>
-          <img id="previewimg" alt="Product Images" />
-        </div>
-        
-      </Modal>
+    <div
+      style={{
+        width: 600,
+        maxWidth: document.documentElement.clientWidth * 0.95,
+      }}
+    >
+      {isPC ? (
+        <Modal
+          forceRender={true}
+          title="Successfully uploaded ! Click save to download your picture"
+          visible={props.visible}
+          onOk={handleSave}
+          onCancel={handleCancel}
+          okText="save"
+          cancelText="skip"
+        >
+          <template>
+            <QRCode
+              id="qrcode"
+              value={
+                props.user.userData
+                  ? `${path}/user/${props.user.userData._id}`
+                  : `${path}/`
+              }
+              size={isPC ? 250 : 170}
+              fgColor="#000000"
+            />
+            <canvas
+              id="TemplateLongPicture"
+              ref={canvasRef}
+              width={props.width}
+              height={props.height + 752}
+            />
+          </template>
+          <div id="picpreview" style={{ width: "95%", margin: "auto" }}>
+            <img id="previewimg" alt="Product Images" />
+          </div>
+        </Modal>
+      ) : (
+        <Modal
+          forceRender={true}
+          title="Successfully uploaded ! 长按保存"
+          visible={props.visible}
+          footer={[
+            <Button key="back" onClick={handleCancel}>
+              ok
+            </Button>,
+          ]}
+        >
+          <template>
+            <QRCode
+              id="qrcode"
+              value={
+                props.user.userData
+                  ? `${path}/user/${props.user.userData._id}`
+                  : `${path}/`
+              }
+              size={isPC ? 250 : 170}
+              fgColor="#000000"
+            />
+            <canvas
+              id="TemplateLongPicture"
+              ref={canvasRef}
+              width={props.width}
+              height={props.height + 752}
+            />
+          </template>
+          <div id="picpreview" style={{ width: "95%", margin: "auto" }}>
+            <img id="previewimg" alt="Product Images" />
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }

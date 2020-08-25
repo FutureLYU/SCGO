@@ -4,43 +4,55 @@ import Masonry from "react-masonry-component";
 import { Icon, Card } from "antd";
 
 function UserPage(props) {
+  const path =
+    process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
   const [Products, setProducts] = useState([]);
-  const [CardSize, setCardSize] = useState({ width: 0 })
+  const [CardSize, setCardSize] = useState({ width: 0 });
   const userid = props.match.params.userid;
-  const isPC = function(){
+  const isPC = (function () {
     var userAgentInfo = navigator.userAgent;
-    var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];  
-    var flag = true;  
-    for (var v = 0; v < Agents.length; v++) {  
-        if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }  
-    }  
+    var Agents = [
+      "Android",
+      "iPhone",
+      "SymbianOS",
+      "Windows Phone",
+      "iPad",
+      "iPod",
+    ];
+    var flag = true;
+    for (var v = 0; v < Agents.length; v++) {
+      if (userAgentInfo.indexOf(Agents[v]) > 0) {
+        flag = false;
+        break;
+      }
+    }
     return flag;
-  }();
+  })();
 
-  const onResize = useCallback(()=>{
-    let boxwidth = document.documentElement.clientWidth * (isPC? 0.75:0.95);
-    let cardnum = isPC? parseInt(boxwidth / 300)+1: 2;
-    let cardwidth = parseInt((boxwidth-15*(cardnum-1))/cardnum);
+  const onResize = useCallback(() => {
+    let boxwidth = document.documentElement.clientWidth * (isPC ? 0.75 : 0.95);
+    let cardnum = isPC ? parseInt(boxwidth / 300) + 1 : 2;
+    let cardwidth = parseInt((boxwidth - 15 * (cardnum - 1)) / cardnum);
     setCardSize({
       width: cardwidth,
-    })
-  },[isPC])
+    });
+  }, [isPC]);
 
   useEffect(() => {
-    let boxwidth = document.documentElement.clientWidth * (isPC? 0.75:0.95);
-    let cardnum = isPC? parseInt(boxwidth / 300)+1: 2;
-    let cardwidth = parseInt((boxwidth-15*(cardnum-1))/cardnum);
+    let boxwidth = document.documentElement.clientWidth * (isPC ? 0.75 : 0.95);
+    let cardnum = isPC ? parseInt(boxwidth / 300) + 1 : 2;
+    let cardwidth = parseInt((boxwidth - 15 * (cardnum - 1)) / cardnum);
     setCardSize({
       width: cardwidth,
-    })
-  }, [isPC])
+    });
+  }, [isPC]);
 
-  useEffect(()=>{
-    window.addEventListener('resize', onResize);
-    return (()=>{
-      window.removeEventListener('resize', onResize) 
-    })
-  },[onResize])
+  useEffect(() => {
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
+  }, [onResize]);
 
   useEffect(() => {
     if (userid) {
@@ -63,7 +75,7 @@ function UserPage(props) {
           marginRight: "15px",
           marginBottom: "10px",
           display: "inline-block",
-          width: CardSize.width + "px"
+          width: CardSize.width + "px",
         }}
       >
         <a href={`/product/${product._id}`}>
@@ -71,13 +83,16 @@ function UserPage(props) {
             hoverable={true}
             cover={
               <img
-                style={{ width: CardSize.width-2+"px" }}
-                src={`http://3.15.2.141/${product.images[0]}`}
+                style={{ width: CardSize.width - 2 + "px" }}
+                src={`${path}/${product.images[0]}`}
                 alt=""
-              />       
+              />
             }
           >
-            <Card.Meta title={product.title} description={`$${product.price}`} />
+            <Card.Meta
+              title={product.title}
+              description={`$${product.price}`}
+            />
           </Card>
         </a>
       </div>
@@ -85,7 +100,7 @@ function UserPage(props) {
   });
 
   return (
-    <div style={{ width: isPC? "75%":"95%", margin: "3rem auto" }}>
+    <div style={{ width: isPC ? "75%" : "95%", margin: "3rem auto" }}>
       <div style={{ textAlign: "center" }}>
         <h1>
           卖家的物品 <Icon type="account-book" />
@@ -104,7 +119,7 @@ function UserPage(props) {
           <h2>No post yet...</h2>
         </div>
       ) : (
-        <div style={{ width: 'calc(100% + 30px)' }} >
+        <div style={{ width: "calc(100% + 30px)" }}>
           <Masonry
             className={"my-gallery-class"} // default ''
             options={{ transitionDuration: 2 }} // default {}

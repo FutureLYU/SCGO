@@ -3,16 +3,18 @@ import { Layout, Menu, Icon, Card, Popover, Button } from "antd";
 import Axios from "axios";
 import Masonry from "react-masonry-component";
 import InfiniteScroll from "react-infinite-scroll-component";
-import ProductDeleteForm from '../../../utils/ProductDeleteForm';
+import ProductDeleteForm from "../../../utils/ProductDeleteForm";
 
 const { Content, Sider } = Layout;
 
 function AdminProductPage(props) {
+  const path =
+    process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
   const Limit = 8; // setLimit
   const [Products, setProducts] = useState([]);
   const [Skip, setSkip] = useState(0);
   const [HasMore, setHasMore] = useState(true);
-  const [DeleteFormValue, setDeleteFormValue] = useState({ visible: false })
+  const [DeleteFormValue, setDeleteFormValue] = useState({ visible: false });
   const [DeleteItem, setDeleteItem] = useState({});
 
   function onLoadMore() {
@@ -36,14 +38,16 @@ function AdminProductPage(props) {
   }, [props]);
 
   useEffect(() => {
-    Axios.post("/api/product/getProducts", { skip: 0, limit: Limit }).then((response) => {
-      if (response.data.success) {
-        setHasMore(response.data.postSize < Limit ? false : true);
-        setProducts(response.data.products);
-      } else {
-        alert("Failed to fectch product datas");
+    Axios.post("/api/product/getProducts", { skip: 0, limit: Limit }).then(
+      (response) => {
+        if (response.data.success) {
+          setHasMore(response.data.postSize < Limit ? false : true);
+          setProducts(response.data.products);
+        } else {
+          alert("Failed to fectch product datas");
+        }
       }
-    });
+    );
   }, []);
 
   const getProducts = (variables) => {
@@ -76,20 +80,19 @@ function AdminProductPage(props) {
   const handleDeleteOk = (reason) => {
     let deleteItem = { ...DeleteItem, ...reason };
 
-    Axios.post('/api/users/deleteProduct', deleteItem)
-      .then((response) => {
-        const variables = { userid: props.user.userData._id };
-        getProducts(variables);
-      })
-    
+    Axios.post("/api/users/deleteProduct", deleteItem).then((response) => {
+      const variables = { userid: props.user.userData._id };
+      getProducts(variables);
+    });
+
     setDeleteItem({});
     setDeleteFormValue({ ...DeleteFormValue, visible: false });
-  }
+  };
 
   const handleDeleteCancel = () => {
     setDeleteItem({});
     setDeleteFormValue({ ...DeleteFormValue, visible: false });
-  }
+  };
 
   const renderCards = Products.map((product, index) => {
     return (
@@ -104,7 +107,9 @@ function AdminProductPage(props) {
         <Popover
           content={
             <div>
-              <Button type="link" onClick={()=>handleDelete(product)}>下架删除</Button>
+              <Button type="link" onClick={() => handleDelete(product)}>
+                下架删除
+              </Button>
             </div>
           }
         >
@@ -115,7 +120,7 @@ function AdminProductPage(props) {
               <a href={`/product/${product._id}`}>
                 <img
                   style={{ width: "270px", height: `${752 / 270}%` }}
-                  src={`http://3.15.2.141/${product.images[0]}`}
+                  src={`${path}/${product.images[0]}`}
                   alt=""
                 />
               </a>
@@ -183,7 +188,11 @@ function AdminProductPage(props) {
               </div>
             ) : (
               <div
-                style={{ width: "108%", overflowX: "hidden", overflowY: "auto" }}
+                style={{
+                  width: "108%",
+                  overflowX: "hidden",
+                  overflowY: "auto",
+                }}
               >
                 <InfiniteScroll
                   dataLength={Products.length} //This is important field to render the next data
