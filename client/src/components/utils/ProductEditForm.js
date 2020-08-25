@@ -32,7 +32,7 @@ function ProductEditForm(props) {
 
     // Product Form Update
     const onTitleChange = (event) => {
-        if (event.currentTarget.value.length < 16) {
+        if (event.currentTarget.value.length < 17) {
             setTitleValue(event.currentTarget.value) 
         }
     };
@@ -109,15 +109,15 @@ function ProductEditForm(props) {
                     />
                     <br /><br />
             
-                    <label>Title:</label>
+                    <label>商品名称（不超过16字符）:</label>
                     <Input onChange={onTitleChange} value={TitleValue} />
                     <br /><br />
             
-                    <label>Description:</label>
+                    <label>商品描述:</label>
                     <TextArea onChange={onDescriptionChange} value={DescriptionValue} />
                     <br /><br />
             
-                    <label>Price($):</label>
+                    <label>商品价格($):</label>
                     <Input onChange={onPriceChange} value={PriceValue} type="number" />
                     <br /><br />
 

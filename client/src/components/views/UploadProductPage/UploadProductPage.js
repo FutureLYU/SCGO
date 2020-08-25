@@ -299,7 +299,7 @@ function UploadProductPage(props) {
           items={Items}
           width={752}
           height={Items.reduce((total, cur) => {
-            return total + cur.heights[0];
+            return total + cur.heights[0] + 90;
           }, 0)}
           user={props.user}
         />

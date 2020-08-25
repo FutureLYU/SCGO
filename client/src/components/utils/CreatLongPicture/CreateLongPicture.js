@@ -29,7 +29,7 @@ function CreateLongPicture(props) {
 
   useEffect(() => {
     if (props.visible) {
-      var position = 0;
+      var position = 300;
       var count = props.items.length + 1;
       var mycv = canvasRef.current;
       var myctx = mycv.getContext("2d");
@@ -39,22 +39,30 @@ function CreateLongPicture(props) {
       function drawCanvas(image, text, height) {
         var mycv = canvasRef.current;
         var myctx = mycv.getContext("2d");
-        myctx.drawImage(image, 0, position);
+        myctx.drawImage(image, 0, position + 90);
         myctx.font = "40px Arial";
-        myctx.fillStyle = "red";
+        myctx.fillStyle = "black";
         myctx.textAlign = "center";
-        myctx.fillText(text, 351, position + 40, 700);
-        position = position + height;
+        myctx.fillText(text, 371, position + 75, 720);
+        position = position + height + 90;
       }
 
       function drawQRCode(image, productheight) {
         var mycv = canvasRef.current;
         var myctx = mycv.getContext("2d");
-        myctx.drawImage(image, 126, productheight + 80);
-        myctx.font = "30px Arial";
+        myctx.drawImage(image, 30, productheight + 30);
+        myctx.font = "20px Arial";
         myctx.fillStyle = "black";
         myctx.textAlign = "center";
-        myctx.fillText("扫码查看更多信息", 370, productheight + 620, 700);
+        myctx.fillText("扫码查看更多信息", 110, productheight + 210, 200);
+        myctx.textAlign = "left";
+        myctx.font = "30px Arial";
+        myctx.fillStyle = "#006400";
+        myctx.fillText(
+          "SCused - 免费二手物品交易网站", 
+          250,
+          productheight + 130,
+          450)
       }
 
       function showPreivew(count) {
@@ -97,12 +105,12 @@ function CreateLongPicture(props) {
       let qrsrc = document.getElementById("qrcode");
       qrImage.src = qrsrc.toDataURL("image/png");
       if (qrImage.complete) {
-        drawQRCode(qrImage, props.height);
+        drawQRCode(qrImage, 0);
         count--;
         showPreivew(count);
       } else {
         qrImage.onload = function () {
-          drawQRCode(qrImage, props.height);
+          drawQRCode(qrImage, 0);
           count--;
           showPreivew(count);
         };
@@ -154,14 +162,14 @@ function CreateLongPicture(props) {
                   ? `${path}/user/${props.user.userData._id}`
                   : `${path}/`
               }
-              size={isPC ? 250 : 170}
+              size={isPC ? 80 : 52}
               fgColor="#000000"
             />
             <canvas
               id="TemplateLongPicture"
               ref={canvasRef}
               width={props.width}
-              height={props.height + 752}
+              height={props.height + 300}
             />
           </template>
           <div id="picpreview" style={{ width: "95%", margin: "auto" }}>
@@ -187,14 +195,14 @@ function CreateLongPicture(props) {
                   ? `${path}/user/${props.user.userData._id}`
                   : `${path}/`
               }
-              size={isPC ? 250 : 170}
+              size={isPC ? 80 : 52}
               fgColor="#000000"
             />
             <canvas
               id="TemplateLongPicture"
               ref={canvasRef}
               width={props.width}
-              height={props.height + 752}
+              height={props.height + 300}
             />
           </template>
           <div id="picpreview" style={{ width: "95%", margin: "auto" }}>
