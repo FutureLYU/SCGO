@@ -29,6 +29,9 @@ function LandingPage(props) {
     }  
     return flag;
   }();
+  const path = "."
+    ? process.env.NODE_ENV === "production"
+    : "http://localhost:5000";
 
 
 
@@ -243,7 +246,7 @@ function LandingPage(props) {
                         
                           <img
                             style={{ width: CardSize.width-2+'px' }}
-                            src={`http://3.15.2.141/${product.images[0]}`}
+                            src={`${path}/${product.images[0]}`}
                             alt=""
                           />
                       }
