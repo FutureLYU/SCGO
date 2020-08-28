@@ -40,7 +40,6 @@ function LandingPage(props) {
       }
     }
     return flag;
-
   })();
 
   const getTagByKey = (key) => {
@@ -255,7 +254,7 @@ function LandingPage(props) {
                     width: CardSize.width + "px",
                   }}
                 >
-                  <a href={`/product/${product._id}`}>
+                  <a href={`/product/${product._id}`} target="_blank">
                     <Card
                       hoverable={true}
                       cover={

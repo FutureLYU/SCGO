@@ -117,7 +117,7 @@ function AdminProductPage(props) {
             style={{ width: "270px" }}
             hoverable={true}
             cover={
-              <a href={`/product/${product._id}`}>
+              <a href={`/product/${product._id}`} target="_blank">
                 <img
                   style={{ width: "270px", height: `${752 / 270}%` }}
                   src={`${path}/${product.images[0]}`}

@@ -158,23 +158,23 @@ function UserPage(props) {
         }}
       >
         <Popover content={content(product)} title="Edit">
-          <a href={`/product/${product._id}`}>
-            <Card
-              hoverable={true}
-              cover={
+          <Card
+            hoverable={true}
+            cover={
+              <a href={`/product/${product._id}`} target="_blank">
                 <img
                   style={{ width: CardSize.width - 2 + "px" }}
                   src={`${path}/${product.images[0]}`}
                   alt=""
                 />
-              }
-            >
-              <Card.Meta
-                title={product.title}
-                description={`$${product.price}`}
-              />
-            </Card>
-          </a>
+              </a>
+            }
+          >
+            <Card.Meta
+              title={product.title}
+              description={`$${product.price}`}
+            />
+          </Card>
         </Popover>
       </div>
     );
@@ -186,6 +186,7 @@ function UserPage(props) {
         <h1>
           我的物品 <Icon type="account-book" />
         </h1>
+        {isPC ? <p></p> : <p>点击文字部分编辑</p>}
       </div>
 
       {Products.length === 0 ? (

@@ -78,7 +78,7 @@ function UserPage(props) {
           width: CardSize.width + "px",
         }}
       >
-        <a href={`/product/${product._id}`}>
+        <a href={`/product/${product._id}`} target="_blank">
           <Card
             hoverable={true}
             cover={

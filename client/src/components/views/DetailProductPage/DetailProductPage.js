@@ -59,7 +59,6 @@ function DetailProductPage(props) {
                 shape="round"
                 type="danger"
                 style={{ margin: "1em 1em" }}
-                onClick={showContact}
               >
                 查看卖家商品
               </Button>
