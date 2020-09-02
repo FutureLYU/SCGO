@@ -3,8 +3,8 @@ const placesData = [
     { key: 1, value: "Gateway" },
     { key: 2, value: "K-town" }, 
     { key: 3, value: "Downtown" }, 
-    { key: 4, value: "USC周边" },
-    { key: 5, value: "LA其他地区" },
+    { key: 4, value: "Near USC" },
+    { key: 5, value: "LA Others" },
 ];
 
 const categoryData = [
@@ -18,26 +18,26 @@ const categoryData = [
 ];
 
 const meansData = [
-    { key: 0, value: "自取" },
-    { key: 1, value: "USC附近可送" },
-    { key: 2, value: "地点可商议" }
+    { key: 0, value: "Pickup" },
+    { key: 1, value: "Free Delivery" },
+    { key: 2, value: "TBD" }
 ]
 
 const tagsData = [
-    { key: 0, value: "Lorenzo自取" }, 
-    { key: 1, value: "Gateway自取" },
-    { key: 2, value: "K-town自取" }, 
-    { key: 3, value: "Downtown自取" }, 
-    { key: 4, value: "USC周边自取" },
-    { key: 5, value: "LA其他地区自取" },
-    { key: 6, value: "USC附近可送" },
-    { key: 7, value: "地点可商议" }
+    { key: 0, value: "Lorenzo Pickup" }, 
+    { key: 1, value: "Gateway Pickup" },
+    { key: 2, value: "K-town Pickup" }, 
+    { key: 3, value: "Downtown Pickup" }, 
+    { key: 4, value: "Near USC Pickup" },
+    { key: 5, value: "LA Others Pickup" },
+    { key: 6, value: "Free Delivery" },
+    { key: 7, value: "TBD" }
 ];
 
 const reasonsData = [
-    { key: 0, value: "已出售" },
-    { key: 1, value: "物品信息错误" },
-    { key: 2, value: "其他原因" }
+    { key: 0, value: "Sold out" },
+    { key: 1, value: "Wrong Information" },
+    { key: 2, value: "Other Reasons" }
 ]
 
 export {

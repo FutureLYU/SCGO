@@ -137,9 +137,7 @@ function UploadProductPage(props) {
     let newItems = Items.map((item) => {
       return {
         ...item,
-        wechat: contact.wechat,
-        email: contact.email,
-        contactchoice: contact.contactchoice,
+        ...contact
       };
     });
     setItems(newItems);
@@ -190,17 +188,17 @@ function UploadProductPage(props) {
               />
             </Col>
             <Col lg={10} xs={24}>
-              <p>商品名称:&nbsp;{item.title}</p>
-              <p>商品描述:&nbsp;{item.description}</p>
-              <p>商品价格:&nbsp;{item.price}</p>
+              <p>Title:&nbsp;{item.title}</p>
+              <p>Description:&nbsp;{item.description}</p>
+              <p>Price:&nbsp;{item.price}</p>
               <p>
-                交易方式:&nbsp;
+                Transaction:&nbsp;
                 <Tag style={{ width: "100px", textAlign: "center" }}>
                   {getTagByKey(item.tag)}
                 </Tag>
               </p>
               <p>
-                物品种类:&nbsp;
+                Category:&nbsp;
                 <Tag style={{ width: "100px", textAlign: "center" }}>
                   {getCategoryByKey(item.category)}
                 </Tag>

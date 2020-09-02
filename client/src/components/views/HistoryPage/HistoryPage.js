@@ -21,10 +21,10 @@ function HistoryPage(props) {
                 <table>
                     <thead>
                         <tr>
-                            <th>商品名称</th>
-                            <th>商品价格</th>
-                            <th>下架时间</th>
-                            <th>下架原因</th>
+                            <th>Title</th>
+                            <th>Price</th>
+                            <th>Time</th>
+                            <th>Reason</th>
                         </tr>
                     </thead>
 
@@ -44,9 +44,9 @@ function HistoryPage(props) {
                 <table style={{ tableLayout: "fixed" }}>
                     <thead>
                         <tr>
-                            <th>商品</th>
-                            <th>时间</th>
-                            <th>下架原因</th>
+                            <th>Title</th>
+                            <th>Time</th>
+                            <th>Reason</th>
                         </tr>
                     </thead>
 

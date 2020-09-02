@@ -124,12 +124,12 @@ function UserPage(props) {
       <div>
         <div>
           <Button type="link" onClick={() => handleDelete(product)}>
-            下架删除
+            Delete
           </Button>
         </div>
         <div>
           <Button type="link" onClick={() => handleEdit(product)}>
-            修改内容
+            Edit
           </Button>
         </div>
       </div>
@@ -157,7 +157,7 @@ function UserPage(props) {
           width: CardSize.width + "px",
         }}
       >
-        <Popover content={content(product)} title="Edit">
+        <Popover content={content(product)} title="Product">
           <Card
             hoverable={true}
             cover={
@@ -184,9 +184,9 @@ function UserPage(props) {
     <div style={{ width: isPC ? "75%" : "95%", margin: "3rem auto" }}>
       <div style={{ textAlign: "center" }}>
         <h1>
-          我的物品 <Icon type="account-book" />
+          My Items <Icon type="account-book" />
         </h1>
-        {isPC ? <p></p> : <p>点击文字部分编辑</p>}
+        {isPC ? <p></p> : <p>Click Title to Edit</p>}
       </div>
 
       {Products.length === 0 ? (

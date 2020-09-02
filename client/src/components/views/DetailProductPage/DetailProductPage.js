@@ -51,7 +51,7 @@ function DetailProductPage(props) {
               style={{ margin: "1em 1em" }}
               onClick={showContact}
             >
-              点击联系卖家
+              Seller Info
             </Button>
             <a href={`/user/${Product.writer ? Product.writer._id : ""}`}>
               <Button
@@ -60,7 +60,7 @@ function DetailProductPage(props) {
                 type="danger"
                 style={{ margin: "1em 1em" }}
               >
-                查看卖家商品
+                More Items
               </Button>
             </a>
           </div>
@@ -74,18 +74,13 @@ function DetailProductPage(props) {
         onCancel={handleCancel}
         destroyOnClose={true}
       >
-        {Product.contactchoice === 0 ? (
-          <div>
-            <p>卖家的微信号为{Product.wechat}，您可以添加微信联系卖家。</p>
-          </div>
-        ) : (
+        {
           <div>
             <p>
-              卖家的其他联系方式为{Product.email}
-              ，您可以通过该联系方式联系卖家。
+              You can contact seller's by {Product.contactchoice}: {Product.contact}
             </p>
           </div>
-        )}
+        }
       </Modal>
     </div>
   );

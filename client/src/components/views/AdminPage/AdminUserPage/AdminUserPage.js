@@ -104,10 +104,10 @@ function UserControl(props) {
                     style={{ height: "100%", borderRight: 0 }}
                 >
                     <Menu.Item onClick={handleProductClick} key="1">
-                        物品审核
+                        Products
                     </Menu.Item>
                     <Menu.Item onClick={handleUserClick} key="2">
-                        用户审核
+                        Users
                     </Menu.Item>
                 </Menu>
             </Sider>
@@ -133,7 +133,7 @@ function UserControl(props) {
                         <br />
                         <Row gutter={4}>
                             <Col lg={2} xs={12}>
-                                <h3 style={{ margin: "auto"}}>&nbsp;&nbsp;&nbsp;&nbsp;USER ID查询:</h3>
+                                <h3 style={{ margin: "auto"}}>&nbsp;&nbsp;&nbsp;&nbsp;USER ID Search:</h3>
                             </Col>
                             <Col lg={6} xs={24}>
                                 <div style={{ maxWidth: "400px" }} >
@@ -152,7 +152,7 @@ function UserControl(props) {
 
                     {/* Table */}
                     <div style={{ background: 'white', marginBottom: '20px'}}>
-                        <h3 style={{ padding: '1rem 1rem 1rem 1rem' }}>查询表格</h3>
+                        <h3 style={{ padding: '1rem 1rem 1rem 1rem' }}>Results</h3>
                         <Table 
                             style={{ background: 'white' }}
                             dataSource={UserData.length > 0? UserData: null}

@@ -54,12 +54,12 @@ function CreateLongPicture(props) {
         myctx.font = "20px Arial";
         myctx.fillStyle = "black";
         myctx.textAlign = "center";
-        myctx.fillText("扫码查看更多信息", 110, productheight + 210, 200);
+        myctx.fillText("Scan for More Info", 110, productheight + 210, 200);
         myctx.textAlign = "left";
         myctx.font = "30px Arial";
         myctx.fillStyle = "#006400";
         myctx.fillText(
-          "SCused - 免费二手物品交易网站", 
+          "SCused - Free Second-hand Transaction Website", 
           250,
           productheight + 130,
           450)
@@ -179,7 +179,7 @@ function CreateLongPicture(props) {
       ) : (
         <Modal
           forceRender={true}
-          title="Successfully uploaded ! 长按保存"
+          title="Successfully uploaded! Long Press to Save"
           visible={props.visible}
           footer={[
             <Button key="back" onClick={handleCancel}>

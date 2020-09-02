@@ -177,7 +177,7 @@ function LandingPage(props) {
             defaultActiveKey={["0"]}
             list={tags}
             handleFilters={(filters) => handleFilters(filters, "tag")}
-            filtername="交易方式"
+            filtername="Transaction Means"
             category="tag"
           />
         </Col>
@@ -188,7 +188,7 @@ function LandingPage(props) {
             defaultActiveKey={["0"]}
             list={category}
             handleFilters={(filters) => handleFilters(filters, "category")}
-            filtername="物品种类"
+            filtername="Product Category"
             category="category"
           />
         </Col>
@@ -215,8 +215,8 @@ function LandingPage(props) {
           }}
         >
           <h2>
-            暂未相关物品，您可以重新选择筛选/搜索内容或点击
-            <a href="/">Home</a>返回
+            No related items yet，please re-select filter / search content or click
+            <a href="/">Home</a>.
           </h2>
         </div>
       ) : (

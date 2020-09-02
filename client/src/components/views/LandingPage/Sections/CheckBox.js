@@ -26,7 +26,7 @@ function CheckBox(props) {
     }
 
     const renderCheckboxLists = () => props.list && props.list.map((value, index) => (
-        <Col lg={6} xs={24} key={index}>
+        <Col lg={8} xs={24} key={index}>
             <React.Fragment key={index}> 
                 <Checkbox
                     key={index}

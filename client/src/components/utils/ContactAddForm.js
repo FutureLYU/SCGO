@@ -1,43 +1,29 @@
-import React, { useEffect, useState } from 'react'
-import { Input, Modal, Radio} from "antd";
+import React, { useState } from 'react'
+import { Input, Modal, Select } from "antd";
+
+const { Option } = Select;
 
 function ContactAddForm(props) {
-    const [WeChat, setWeChat] = useState("");
-    const [Email, setEmail] = useState("");
-    const [ContactChoice, setContactChoice] = useState(0);
-
-    useEffect(() => {
-        if (props.user.userData) {
-            setEmail(props.user.userData.email);
-        }
-        if (props.contact) {
-            setWeChat(props.contact.wechat);
-            setEmail(props.contact.email);
-            setContactChoice(props.contact.contactchoice);
-        }    
-    }, [props])
+    const [Contact, setContact] = useState("");
+    const [ContactChoice, setContactChoice] = useState("WeChat");
+    const contactmeans = ["WeChat", "Snapchat", "Facebook", "What's App", "Email"];
 
     // Product Form Update
-    const onWeChatChange = (event) => { setWeChat(event.currentTarget.value) };
-    const onEmailChange = (event) => { setEmail(event.currentTarget.value) };
-    const onContactChange = (event) => { 
-        setContactChoice(event.target.value) 
-    };
+    const onContactChange = (event) => { setContact(event.currentTarget.value) };
+    const onContactChoiceChange = (value) => { setContactChoice(value) };
     const setDefault = () => {
-        setWeChat("");
-        setEmail(props.user.userData.email);
-        setContactChoice(0);
+        setContact("");
+        setContactChoice("WeChat");
     }
 
     const handleOk = () => {
-        if ((ContactChoice === 0 && !WeChat) || (ContactChoice===1 && !Email)) {
-            return alert("fill one of the contact way");
+        if (!Contact) {
+            return alert("Fill one of the contact means!");
         }
 
         const contact = {
-            wechat: WeChat,
-            email: Email,
-            contactchoice: ContactChoice
+            contact: Contact,
+            contactchoice: ContactChoice,
         }
         
         props.handleOk(contact);
@@ -58,23 +44,13 @@ function ContactAddForm(props) {
                 onCancel={handleCancel}
                 destroyOnClose={true}
             >
-                <Radio.Group onChange={onContactChange} value={ContactChoice}>
-                    <Radio value={0}>
-                        希望买家直接通过微信联系我<br />
-                        微信: { 
-                        ContactChoice === 0 ? 
-                        <Input onChange={onWeChatChange} value={WeChat} /> : 
-                        <Input onChange={onWeChatChange} value={WeChat} disabled /> 
-                        }
-                    </Radio><br /><br />
-                    <Radio value={1}>
-                        希望买家通过其他方式联系我<br />
-                        其他: { 
-                        ContactChoice === 1 ? 
-                        <Input onChange={onEmailChange} value={Email} /> :
-                        <Input onChange={onEmailChange} value={Email} disabled />}
-                    </Radio>
-                </Radio.Group>
+                <p>Please provide your contact information:</p>
+                <Select style={{ width: 120 }} onChange={onContactChoiceChange} value={ContactChoice}>
+                    { contactmeans.map( contactmean => (
+                        <Option key={contactmean} value={contactmean}>{contactmean}</Option>
+                    ))}
+                </Select>&nbsp;&nbsp;&nbsp;
+                <Input style={{ width: 170}} onChange={onContactChange} value={Contact} />
             </Modal>
         </div>
     )

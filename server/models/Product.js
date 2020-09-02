@@ -42,17 +42,13 @@ const productSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
-    wechat: {
-      type: String,
-      default: "",
-    },
-    email: {
+    contact: {
       type: String,
       default: "",
     },
     contactchoice: {
-      type: Number,
-      default: 0,
+      type: String,
+      default: "",
     },
     sold: {
       type: Number,

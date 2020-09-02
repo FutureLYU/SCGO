@@ -34,11 +34,11 @@ function ProductInfo(props) {
 
     return (
         <div>
-            <Descriptions title="商品详情">
-                <Descriptions.Item label="价格"> {Product.price}</Descriptions.Item>
-                <Descriptions.Item label="商品类别"> {getCategoryByKey(Product.category)}</Descriptions.Item>
-                <Descriptions.Item label="交易方式"> {getTagByKey(Product.tag)}</Descriptions.Item>
-                <Descriptions.Item label="商品描述"> {Product.description}</Descriptions.Item>
+            <Descriptions title="Product Information">
+                <Descriptions.Item label="Price"> {Product.price}</Descriptions.Item>
+                <Descriptions.Item label="Category"> {getCategoryByKey(Product.category)}</Descriptions.Item>
+                <Descriptions.Item label="Transaction"> {getTagByKey(Product.tag)}</Descriptions.Item>
+                <Descriptions.Item label="Description"> {Product.description}</Descriptions.Item>
             </Descriptions>
             <br /><br /><br />
         </div>

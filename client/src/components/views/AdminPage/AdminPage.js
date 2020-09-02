@@ -37,10 +37,10 @@ function AdminPage(props) {
           style={{ height: "100%", borderRight: 0 }}
         >
           <Menu.Item onClick={handleProductClick} key="1">
-            物品审核
+            Products
           </Menu.Item>
           <Menu.Item onClick={handleUserClick} key="2">
-            用户审核
+            Users
           </Menu.Item>
         </Menu>
       </Sider>

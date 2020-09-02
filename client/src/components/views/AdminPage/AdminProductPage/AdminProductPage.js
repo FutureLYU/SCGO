@@ -108,7 +108,7 @@ function AdminProductPage(props) {
           content={
             <div>
               <Button type="link" onClick={() => handleDelete(product)}>
-                下架删除
+                Delete
               </Button>
             </div>
           }
@@ -153,10 +153,10 @@ function AdminProductPage(props) {
             style={{ height: "100%", borderRight: 0 }}
           >
             <Menu.Item onClick={handleProductClick} key="1">
-              物品审核
+              Products
             </Menu.Item>
             <Menu.Item onClick={handleUserClick} key="2">
-              用户审核
+              Users
             </Menu.Item>
           </Menu>
         </Sider>
@@ -171,7 +171,7 @@ function AdminProductPage(props) {
           <div style={{ width: "90%", margin: "3rem auto" }}>
             <div style={{ textAlign: "center" }}>
               <h1>
-                最新物品 <Icon type="account-book" />
+                Newest Items <Icon type="account-book" />
               </h1>
             </div>
 

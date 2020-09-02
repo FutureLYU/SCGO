@@ -48,61 +48,61 @@ const place = [
     },
     {
         "_id": 4,
-        "name": "USC周边", 
+        "name": "Near USC", 
     },
     {
         "_id": 5,
-        "name": "LA其他地区",
+        "name": "LA Others",
     },
 ]
 
 const mean = [
     { 
         "_id": 0, 
-        "name": "自取" 
+        "name": "Pickup" 
     },
     { 
         "_id": 1, 
-        "name": "USC附近可送" 
+        "name": "Free Delivery" 
     },
     { 
         "_id": 2, 
-        "name": "地点可商议" 
+        "name": "TBD" 
     }
 ]
 
 const tags = [
     {
         "_id": 0,
-        "name": "Lorenzo自取",
+        "name": "Lorenzo Pickup",
     },
     {
         "_id": 1,
-        "name": "Gateway自取",
+        "name": "Gateway Pickup",
     },
     {
         "_id": 2,
-        "name": "K-town自取", 
+        "name": "K-town Pickup", 
     },
     {
         "_id": 3,
-        "name": "Downtown自取", 
+        "name": "Downtown Pickup", 
     },
     {
         "_id": 4,
-        "name": "USC周边自取", 
+        "name": "Near USC Pickup", 
     },
     {
         "_id": 5,
-        "name": "LA其他地区自取",
+        "name": "LA Others Pickup",
     },
     { 
         "_id": 6, 
-        "name": "USC附近可送" 
+        "name": "Free Delivery" 
     },
     { 
         "_id": 7, 
-        "name": "地点可商议" 
+        "name": "TBD" 
     }
 ]
 
